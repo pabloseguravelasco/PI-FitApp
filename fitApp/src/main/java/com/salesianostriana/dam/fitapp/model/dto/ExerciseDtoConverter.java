@@ -21,7 +21,6 @@ public class ExerciseDtoConverter {
                 .title(exercise.getTitle())
                 .text(exercise.getText())
                 .userNickname(user.getNickname())
-                .publico(exercise.isPublico())
                 .imagen(uri)
                 .build();
 
@@ -41,7 +40,6 @@ public class ExerciseDtoConverter {
                 .title(exercise.getTitle())
                 .text(exercise.getText())
                 .userNickname(exercise.getUser().getNickname())
-                .publico(exercise.isPublico())
                 .imagen(uri)
                 .build();
 

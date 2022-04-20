@@ -47,10 +47,6 @@ public class ExerciseController {
     }
 
 
-    @GetMapping("/public")
-    public ResponseEntity<?> findByIsPublic() {
-        return ResponseEntity.ok(service.findByPublico(true));
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetExerciseDto> findPostByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){

@@ -14,5 +14,4 @@ public class GetExerciseDto {
     private String text;
     private String imagen;
     private String userNickname;
-    private boolean publico;
 }

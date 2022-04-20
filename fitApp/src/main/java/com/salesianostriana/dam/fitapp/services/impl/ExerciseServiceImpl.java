@@ -74,13 +74,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         return repository.findAll();
     }
 
-    @Override
-    public  List<GetExerciseDto> findByPublico(boolean publico) {
 
-        List<Exercise> listaExercise = repository.findByPublico(publico);
-
-        return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
-    }
 
     @Override
     public Optional<Exercise> findPostByID(Long id){

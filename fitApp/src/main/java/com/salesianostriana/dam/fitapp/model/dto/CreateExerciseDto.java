@@ -11,7 +11,7 @@ public class CreateExerciseDto {
 
     private String title;
     private String text;
-    private boolean publico;
+
 
 
 }

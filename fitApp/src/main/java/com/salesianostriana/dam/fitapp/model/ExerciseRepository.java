@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
-    List<Exercise> findByPublico(Boolean publico);
 
     List<Exercise> findByUserNickname(String nickname);
 

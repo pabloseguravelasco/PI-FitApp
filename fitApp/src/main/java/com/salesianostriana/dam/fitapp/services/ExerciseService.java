@@ -18,7 +18,6 @@ public interface ExerciseService {
 
     List<Exercise> findAll();
 
-    List<GetExerciseDto> findByPublico(boolean publico);
 
     Optional<Exercise> findPostByID(Long id);
 
