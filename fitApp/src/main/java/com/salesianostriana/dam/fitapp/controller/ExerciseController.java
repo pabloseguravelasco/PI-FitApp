@@ -63,6 +63,8 @@ public class ExerciseController {
             return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(postOptional.get(),user));
     }
 
+
+
     @GetMapping("/")
     public ResponseEntity<List<GetExerciseDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname){
 
