@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/exercise")
 @RequiredArgsConstructor
 
 public class ExerciseController {
@@ -36,10 +36,10 @@ public class ExerciseController {
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestPart("file") MultipartFile file,
-                                    @RequestPart("post") CreateExerciseDto newPost,
+                                    @RequestPart("exercise") CreateExerciseDto newExercise,
                                     @AuthenticationPrincipal UserEntity user) throws IOException {
 
-        Exercise exerciseCreated = service.save(newPost, file, user);
+        Exercise exerciseCreated = service.save(newExercise, file, user);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseCreated, user));
@@ -49,14 +49,14 @@ public class ExerciseController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetExerciseDto> findPostByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
+    public ResponseEntity<GetExerciseDto> findExerciseByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
 
-        Optional<Exercise> postOptional = service.findPostByID(id);
+        Optional<Exercise> exerciseOptional = service.findExerciseByID(id);
 
-        if(postOptional.isEmpty()){
+        if(exerciseOptional.isEmpty()){
             return ResponseEntity.notFound().build();
         }else
-            return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(postOptional.get(),user));
+            return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseOptional.get(),user));
     }
 
 
@@ -67,19 +67,19 @@ public class ExerciseController {
         if (nickname.isBlank()){
             return ResponseEntity.notFound().build();
         } else
-            return ResponseEntity.ok().body(service.listPostDto(nickname));
+            return ResponseEntity.ok().body(service.listExerciseDto(nickname));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<GetExerciseDto>> findAllPostUserCurrent(@AuthenticationPrincipal UserEntity user){
+    public ResponseEntity<List<GetExerciseDto>> findAllExerciseUserCurrent(@AuthenticationPrincipal UserEntity user){
 
         if (user.getId() == null){
             return ResponseEntity.notFound().build();
         } else
-            return ResponseEntity.ok().body(service.listPostDto(user.getNickname()));
+            return ResponseEntity.ok().body(service.listExerciseDto(user.getNickname()));
     }
 
-    @PutMapping("/{id}")
+   /* @PutMapping("/{id}")
     public ResponseEntity<Optional<GetExerciseDto>>updatePost (@PathVariable Long id, @RequestPart("file") MultipartFile file,
                                                                @RequestPart("post") CreateExerciseDto createExerciseDto, @AuthenticationPrincipal  UserEntity user) throws Exception {
 
@@ -89,11 +89,11 @@ public class ExerciseController {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.ok().body(service.updatePost(postOptional.get().getId(),file, createExerciseDto,user));
-    }
+    }*/
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+    public ResponseEntity<?> deleteExercise(@PathVariable Long id) {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));
 

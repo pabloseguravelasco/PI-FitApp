@@ -18,13 +18,12 @@ public interface ExerciseService {
 
     List<Exercise> findAll();
 
-
-    Optional<Exercise> findPostByID(Long id);
+    Optional<Exercise> findExerciseByID(Long id);
 
     List<Exercise> findByUserNickname(String nickname);
 
-    List<GetExerciseDto> listPostDto(String nickname);
+    List<GetExerciseDto> listExerciseDto(String nickname);
 
-    Optional<GetExerciseDto> updatePost(Long id, MultipartFile file,
-                                        CreateExerciseDto createExerciseDto, UserEntity user) throws Exception;
+   /* Optional<GetExerciseDto> updatePost(Long id, MultipartFile file,
+                                        CreateExerciseDto createExerciseDto, UserEntity user) throws Exception;*/
 }

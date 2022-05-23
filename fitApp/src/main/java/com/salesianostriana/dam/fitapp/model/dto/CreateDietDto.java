@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.fitapp.model.dto;
 
+
 import lombok.*;
 
 @Getter
@@ -7,12 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GetExerciseDto {
+public class CreateDietDto {
 
-    private Long id;
     private String title;
-    private String text;
+    private String ingredient;
+    private double calories;
     private String imagen;
-    private String userNickname;
-
 }

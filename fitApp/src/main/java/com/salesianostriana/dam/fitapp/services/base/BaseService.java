@@ -41,6 +41,4 @@ public abstract class BaseService<T, ID, R extends JpaRepository<T,ID>> {
 
     public abstract GetUserDto updateUser(MultipartFile file, CreateUserDto createuserDto, UserEntity user) throws Exception;
 
-
-   // public abstract GetUserDto findUserByID( UUID id, MultipartFile file, CreateUserDto createuserDto, UserEntity user) throws Exception;
 }
