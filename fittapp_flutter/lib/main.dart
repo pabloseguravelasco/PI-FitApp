@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/home',
+      initialRoute: '/profile',
       routes: {
         '/': (context) => const MenuScreen(),
         '/login': (context) => const LoginScreen(),
@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/init': (context) => const InitScreen(),
+        //'/exercise': (context) => const ExerciseScreen(),
+
       },
     );
   }

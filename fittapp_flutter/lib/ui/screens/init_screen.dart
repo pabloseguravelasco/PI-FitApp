@@ -24,16 +24,7 @@ class _InitScreenState extends State<InitScreen> {
                   image: DecorationImage(
                       image: AssetImage("assets/images/fondo_init.jpg"),
                       fit: BoxFit.cover))),
-          Container(
-              margin: const EdgeInsets.only(top: 44.0, right: 20.0),
-              alignment: Alignment.topRight,
-              child: const Text(
-                'Skip',
-                textAlign: TextAlign.right,
-                style:
-                    TextStyle(color: Colors.white, 
-                    fontWeight: FontWeight.w900),
-              )),
+     
           Container(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               height: MediaQuery.of(context).size.height * 1,

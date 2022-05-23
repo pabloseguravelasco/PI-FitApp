@@ -1,4 +1,4 @@
-import 'package:fitapp_flutter/models/post_response.dart';
+import 'package:fitapp_flutter/models/exercise_response.dart';
 
 abstract class UserRepository {
   Future<UsuarioDTO> fetchUser();
