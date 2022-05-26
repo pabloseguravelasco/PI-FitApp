@@ -60,7 +60,6 @@ public class UserEntity implements UserDetails {
 
     private String nickname;
 
-    private boolean publico;
 
     @OneToMany(mappedBy = "user")
     private List<Exercise> listaExercise;
@@ -68,9 +67,6 @@ public class UserEntity implements UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
 
-    /*private List<UserEntity> seguidores;
-
-    private List<UserEntity> seguidos;*/
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

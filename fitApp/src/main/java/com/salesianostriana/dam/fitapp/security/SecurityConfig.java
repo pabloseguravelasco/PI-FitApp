@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //REGISTRO/LOGIN
 
-                    .antMatchers(HttpMethod.POST, "/auth/register").anonymous()
+                    .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .antMatchers(HttpMethod.GET, "/me").authenticated()
                     .antMatchers(HttpMethod.GET,"/download/{filename:.+}").permitAll()
@@ -62,6 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //USUARIOS
                 .antMatchers(HttpMethod.GET, "/profile/**").authenticated()
                 .antMatchers(HttpMethod.PUT, "/profile/**").authenticated()
+
+                //EJERCICIOS
+                //DIETA
+
+
 
                     .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated();

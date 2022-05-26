@@ -21,7 +21,6 @@ public class UserDtoConverter {
                 .fechaNacimiento(user.getFechaNacimiento())
                 .email(user.getEmail())
                 .role(user.getRole().name())
-                .publico(user.isPublico())
                 .password(user.getPassword())
                 .avatar(uri)
                 .build();

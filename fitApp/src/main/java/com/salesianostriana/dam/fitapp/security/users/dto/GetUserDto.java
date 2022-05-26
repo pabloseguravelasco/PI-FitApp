@@ -19,11 +19,8 @@ public class GetUserDto {
     private String email;
     private String role;
     private String password;
-    private String password2;
     private String avatar;
-    private boolean publico;
-    /*private List<UserEntity> seguidores;
-    private List<UserEntity> seguidos;*/
+
 
 
 }

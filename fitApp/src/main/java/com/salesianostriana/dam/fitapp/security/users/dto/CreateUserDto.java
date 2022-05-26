@@ -30,6 +30,5 @@ public class CreateUserDto {
 
     private String password2;
     private String avatar;
-    private boolean publico;
 
 }

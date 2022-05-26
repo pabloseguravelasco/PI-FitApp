@@ -20,7 +20,8 @@ public class ExerciseDtoConverter {
                 .id(exercise.getId())
                 .title(exercise.getTitle())
                 .text(exercise.getText())
-                .userNickname(user.getNickname())
+                .duration(exercise.getDuration())
+                .link(exercise.getLink())
                 .imagen(uri)
                 .build();
 
@@ -39,7 +40,6 @@ public class ExerciseDtoConverter {
                 .id(exercise.getId())
                 .title(exercise.getTitle())
                 .text(exercise.getText())
-                .userNickname(exercise.getUser().getNickname())
                 .imagen(uri)
                 .build();
 

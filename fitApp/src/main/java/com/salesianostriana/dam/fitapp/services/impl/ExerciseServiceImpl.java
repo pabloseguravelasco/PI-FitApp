@@ -23,8 +23,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,7 +34,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository repository;
     private final StorageService storageService;
     private final ExerciseDtoConverter exerciseDtoConverter;
-    private final ExerciseRepository exerciseRepository;
+
 
     @Override
     public Exercise save(CreateExerciseDto createExerciseDto, MultipartFile file, UserEntity user) throws IOException {
@@ -46,10 +44,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         String extension = StringUtils.getFilenameExtension(filename);
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
-        BufferedImage imageScaled = storageService.scaledImg(originalImage,1024);
+        BufferedImage imageScaled = storageService.scaledImg(originalImage, 1024);
         OutputStream outputStream = Files.newOutputStream(storageService.load(filename));
-        ImageIO.write(imageScaled,extension, outputStream);
-
+        ImageIO.write(imageScaled, extension, outputStream);
 
 
         String uri = ServletUriComponentsBuilder
@@ -75,28 +72,28 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
 
-
     @Override
-    public Optional<Exercise> findPostByID(Long id){
+    public Optional<Exercise> findExerciseByID(Long id) {
 
-        return  repository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
-    public List<Exercise> findByUserNickname(String nickname){
+    public List<Exercise> findByUserNickname(String nickname) {
 
         return repository.findByUserNickname(nickname);
     }
 
     @Override
-    public List<GetExerciseDto> listPostDto(String nickname){
+    public List<GetExerciseDto> listExerciseDto(String nickname) {
 
         List<Exercise> listaExercise = repository.findByUserNickname(nickname);
 
-       return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
+        return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
     }
+}
 
-    @Override
+    /*@Override
     public Optional<GetExerciseDto> updatePost (@PathVariable Long id, @RequestPart("file") MultipartFile file,
                                                 @RequestPart("exercise") CreateExerciseDto createExerciseDto, @AuthenticationPrincipal  UserEntity user) throws Exception{
 
@@ -141,9 +138,7 @@ public class ExerciseServiceImpl implements ExerciseService {
             exerciseRepository.save(m);
             return exerciseDtoConverter.convertExerciseToGetExerciseDto(m, user);
 
-        });
-    }
-}
+        });*/
 
 
 
@@ -153,4 +148,6 @@ public class ExerciseServiceImpl implements ExerciseService {
 
 
 
-}
+
+
+

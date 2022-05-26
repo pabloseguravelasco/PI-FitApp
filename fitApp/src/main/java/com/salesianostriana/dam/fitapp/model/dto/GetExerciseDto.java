@@ -13,5 +13,7 @@ public class GetExerciseDto {
     private String title;
     private String text;
     private String imagen;
-    private String userNickname;
+    private int duration;
+    private String link;
+
 }
