@@ -61,6 +61,8 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .text(createExerciseDto.getText())
                 .user(user)
                 .imagen(uri)
+                .link(createExerciseDto.getLink())
+                .duration(createExerciseDto.getDuration())
                 .build());
 
 

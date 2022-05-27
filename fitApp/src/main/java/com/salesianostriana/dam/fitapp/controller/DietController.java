@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/diet")
@@ -39,6 +40,12 @@ public class DietController {
 
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(service.findAll().stream().map(dietDtoConverter::convertListDietToListGetDietDto).collect(Collectors.toList()));
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<GetDietDto> findDietByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
 
@@ -49,6 +56,8 @@ public class DietController {
         }else
             return ResponseEntity.ok().body(dietDtoConverter.convertDietToGetDietDto(dietOptional.get(),user));
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDiet(@PathVariable Long id) {
