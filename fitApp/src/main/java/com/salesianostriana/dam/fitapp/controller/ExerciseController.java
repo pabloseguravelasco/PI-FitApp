@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/exercise")
@@ -48,7 +49,7 @@ public class ExerciseController {
 
     @GetMapping("/list")
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(service.findAll().stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList()));
     }
 
 
