@@ -63,6 +63,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .imagen(uri)
                 .link(createExerciseDto.getLink())
                 .duration(createExerciseDto.getDuration())
+                .zone(createExerciseDto.getZone())
                 .build());
 
 
