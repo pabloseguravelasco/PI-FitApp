@@ -79,11 +79,11 @@ return Scaffold(
   }
    Future<List<Exercise>> fetchExercise() async {
     final response = await http.get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/popular?api_key=1c0ce60ed8e0cd9f90ffb9b539b4c646&language=en-US&page=1'));
+        ''));
     if (response.statusCode == 200) {
       return ExerciseResponse.fromJson(jsonDecode(response.body)).content;
     } else {
-      throw Exception('Failed to load the most popular movies');
+      throw Exception('Failed to load the exercises');
     }
   }
 
@@ -114,7 +114,7 @@ return Scaffold(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.network(
-                  'https://image.tmdb.org/t/p/w500/' + exercise.texto,
+                  '' + exercise.texto,
                   width: MediaQuery.of(context).size.width * 0.4),
               Padding(
                   padding: const EdgeInsets.all(10.0),

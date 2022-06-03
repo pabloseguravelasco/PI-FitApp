@@ -1,3 +1,4 @@
+import 'package:fitapp_flutter/ui/screens/exercise_screen.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
 import 'package:fitapp_flutter/ui/screens/init_screen.dart';
 import 'package:fitapp_flutter/ui/screens/login_screen.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/profile',
+      initialRoute: '/',
       routes: {
         '/': (context) => const MenuScreen(),
         '/login': (context) => const LoginScreen(),
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/init': (context) => const InitScreen(),
-        //'/exercise': (context) => const ExerciseScreen(),
+        '/exercise': (context) => const ExerciseScreen(),
 
       },
     );
