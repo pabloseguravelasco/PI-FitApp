@@ -23,6 +23,7 @@ public class Exercise {
     private String imagen;
     private String duration;
     private String link;
+    private String zone;
 
 
 

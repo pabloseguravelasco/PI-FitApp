@@ -25,6 +25,7 @@ public class ExerciseDtoConverter {
                 .text(exercise.getText())
                 .duration(exercise.getDuration())
                 .link(exercise.getLink())
+                .zone(exercise.getZone())
                 .imagen(uri)
                 .build();
 
@@ -45,6 +46,7 @@ public class ExerciseDtoConverter {
                 .text(exercise.getText())
                 .link(exercise.getLink())
                 .duration(exercise.getDuration())
+                .zone(exercise.getZone())
                 .imagen(uri)
                 .build();
 

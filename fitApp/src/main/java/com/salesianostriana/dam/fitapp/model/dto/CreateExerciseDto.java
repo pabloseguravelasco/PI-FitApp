@@ -14,6 +14,7 @@ public class CreateExerciseDto {
     private String imagen;
     private String duration;
     private String link;
+    private String zone;
 
 
 }
