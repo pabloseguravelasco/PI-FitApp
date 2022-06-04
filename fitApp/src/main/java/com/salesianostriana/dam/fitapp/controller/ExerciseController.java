@@ -8,6 +8,7 @@ import com.salesianostriana.dam.fitapp.model.dto.CreateExerciseDto;
 import com.salesianostriana.dam.fitapp.model.dto.GetExerciseDto;
 import com.salesianostriana.dam.fitapp.model.dto.ExerciseDtoConverter;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
 import com.salesianostriana.dam.fitapp.services.ExerciseService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class ExerciseController {
     private final StorageService storageService;
 
 
+
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestPart("file") MultipartFile file,
                                     @RequestPart("exercise") CreateExerciseDto newExercise,
@@ -42,8 +44,13 @@ public class ExerciseController {
 
         Exercise exerciseCreated = service.save(newExercise, file, user);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseCreated, user));
+        if(user.equals(UserRole.ADMIN)) {
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseCreated, user));
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
@@ -88,14 +95,18 @@ public class ExerciseController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteExercise(@PathVariable Long id) {
+    public ResponseEntity<?> deleteExercise(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new ExerciseNotFoundException(id));
 
-        exerciseRepository.delete(exercise);
-        storageService.delete(exercise.getImagen());
+        if(user.equals(UserRole.ADMIN))  {
+            exerciseRepository.delete(exercise);
+            storageService.delete(exercise.getImagen());
 
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     }
