@@ -67,7 +67,8 @@ public class ExerciseController {
         Optional<Exercise> exerciseOptional = service.findExerciseByID(id);
 
         if (exerciseOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound()
+                    .build();
         } else
             return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseOptional.get(), user));
     }
