@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.Exercise;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
@@ -63,6 +64,12 @@ public class UserEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Exercise> listaExercise;
+
+    @OneToMany(mappedBy = "user")
+    private List<Exercise> listFavExercises;
+
+    @OneToMany(mappedBy = "user")
+    private List<Diet> listFavDiets;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;

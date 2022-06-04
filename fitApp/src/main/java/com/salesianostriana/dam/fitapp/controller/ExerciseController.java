@@ -9,6 +9,7 @@ import com.salesianostriana.dam.fitapp.model.dto.GetExerciseDto;
 import com.salesianostriana.dam.fitapp.model.dto.ExerciseDtoConverter;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
 import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
+import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
 import com.salesianostriana.dam.fitapp.services.ExerciseService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class ExerciseController {
     private final ExerciseDtoConverter exerciseDtoConverter;
     private final ExerciseRepository exerciseRepository;
     private final StorageService storageService;
-
+    private final UserEntityRepository userEntityRepository;
 
 
     @PostMapping("/")
@@ -44,11 +45,11 @@ public class ExerciseController {
 
         Exercise exerciseCreated = service.save(newExercise, file, user);
 
-        if(user.equals(UserRole.ADMIN)) {
+        if (user.getRole().equals(UserRole.ADMIN)) {
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseCreated, user));
-        }else{
+        } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
@@ -60,36 +61,60 @@ public class ExerciseController {
     }
 
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<GetExerciseDto> findExerciseByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
+    public ResponseEntity<GetExerciseDto> findExerciseByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
 
         Optional<Exercise> exerciseOptional = service.findExerciseByID(id);
 
-        if(exerciseOptional.isEmpty()){
+        if (exerciseOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
-        }else
-            return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseOptional.get(),user));
+        } else
+            return ResponseEntity.ok().body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseOptional.get(), user));
     }
 
 
-
     @GetMapping("/")
-    public ResponseEntity<List<GetExerciseDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname){
+    public ResponseEntity<List<GetExerciseDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname) {
 
-        if (nickname.isBlank()){
+        if (nickname.isBlank()) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.ok().body(service.listExerciseDto(nickname));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<GetExerciseDto>> findAllExerciseUserCurrent(@AuthenticationPrincipal UserEntity user){
+    public ResponseEntity<List<GetExerciseDto>> findAllExerciseUserCurrent(@AuthenticationPrincipal UserEntity user) {
 
-        if (user.getId() == null){
+        if (user.getId() == null) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.ok().body(service.listExerciseDto(user.getNickname()));
+    }
+
+    @GetMapping("/favorite/")
+    public ResponseEntity<List<GetExerciseDto>> listFavorites(@AuthenticationPrincipal UserEntity user) {
+
+        return ResponseEntity.ok().body(userEntityRepository.findExercisesFav(user.getId())
+                .stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList()));
+    }
+
+
+    @PostMapping("/favorite/{id}")
+    public ResponseEntity<List<GetExerciseDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
+
+
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+
+        if (!exercise.isEmpty()) {
+            List<Exercise> exerciseFavList = userEntityRepository.findExercisesFav(user.getId());
+            exerciseFavList.add(exercise.get());
+            return ResponseEntity.ok().build();
+
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        }
+
     }
 
 
@@ -99,7 +124,7 @@ public class ExerciseController {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new ExerciseNotFoundException(id));
 
-        if(user.equals(UserRole.ADMIN))  {
+        if(user.getRole().equals(UserRole.ADMIN))  {
             exerciseRepository.delete(exercise);
             storageService.delete(exercise.getImagen());
 

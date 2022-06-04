@@ -3,6 +3,7 @@ package com.salesianostriana.dam.fitapp.controller;
 import com.salesianostriana.dam.fitapp.errors.exception.DietNotFoundException;
 import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.DietRepository;
+import com.salesianostriana.dam.fitapp.model.Exercise;
 import com.salesianostriana.dam.fitapp.model.dto.*;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
 import com.salesianostriana.dam.fitapp.services.DietService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,6 +58,26 @@ public class DietController {
         }else
             return ResponseEntity.ok().body(dietDtoConverter.convertDietToGetDietDto(dietOptional.get(),user));
     }
+
+    /*@GetMapping("/favorite/")
+    public ResponseEntity<List<GetExerciseDto>> listFavorites(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
+
+        return
+    }
+
+
+    @PostMapping("/favorite/{id}")
+    public ResponseEntity<List<GetDietDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
+
+        Optional<Diet> dietOptional = service.findDietByID(id);
+
+        if(dietOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+
+            return
+        }
+    }*/
 
 
 
