@@ -3,8 +3,11 @@ package com.salesianostriana.dam.fitapp.controller;
 import com.salesianostriana.dam.fitapp.errors.exception.DietNotFoundException;
 import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.DietRepository;
+import com.salesianostriana.dam.fitapp.model.Exercise;
 import com.salesianostriana.dam.fitapp.model.dto.*;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
+import com.salesianostriana.dam.fitapp.security.users.services.UserEntityService;
 import com.salesianostriana.dam.fitapp.services.DietService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import com.salesianostriana.dam.fitapp.utils.PaginationLinksUtils;
@@ -35,6 +38,8 @@ public class DietController {
     private final DietRepository dietRepository;
     private final StorageService storageService;
     private final PaginationLinksUtils paginationLinksUtils;
+    private final UserEntityService userEntityService;
+    private final UserEntityRepository userEntityRepository;
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestPart("file") MultipartFile file,
@@ -72,25 +77,28 @@ public class DietController {
             return ResponseEntity.ok().body(dietDtoConverter.convertDietToGetDietDto(dietOptional.get(),user));
     }
 
-    /*@GetMapping("/favorite/")
-    public ResponseEntity<List<GetExerciseDto>> listFavorites(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
-
-        return
-    }
 
 
     @PostMapping("/favorite/{id}")
-    public ResponseEntity<List<GetDietDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
+    public ResponseEntity<List<GetDietDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
 
-        Optional<Diet> dietOptional = service.findDietByID(id);
 
-        if(dietOptional.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }else{
+        userEntityRepository.findDietsFav(user.getId()).add(dietRepository.findById(id).get());
+        userEntityService.save(user);
+        return ResponseEntity.ok().build();
+        /*Optional<Diet> dietOptional = service.findDietByID(id);
 
-            return
-        }
-    }*/
+        if (!diet.isEmpty()) {
+
+            userEntityService.saveFavoriteDiet(user, id);
+            return ResponseEntity.ok().build();
+
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        }*/
+
+    }
 
 
 

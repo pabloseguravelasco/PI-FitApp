@@ -4,7 +4,10 @@ package com.salesianostriana.dam.fitapp.security;
 import com.salesianostriana.dam.fitapp.security.dto.JwtUserResponse;
 import com.salesianostriana.dam.fitapp.security.dto.LoginDto;
 import com.salesianostriana.dam.fitapp.security.jwt.JwtProvider;
+import com.salesianostriana.dam.fitapp.security.users.dto.UserDtoConverter;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
+import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,8 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UserDtoConverter userDtoConverter;
+
 
     @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
@@ -50,7 +55,7 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     public ResponseEntity<?> quienSoyYo(@AuthenticationPrincipal UserEntity user){
-        return ResponseEntity.ok(convertUserToJwtUserResponse(user, null));
+        return ResponseEntity.ok(userDtoConverter.convertUserEntityToGetUserDto(user));
     }
 
 

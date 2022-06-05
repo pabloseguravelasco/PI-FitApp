@@ -55,6 +55,7 @@ public class DietServiceImpl implements DietService {
                 .title(createDietDto.getTitle())
                 .ingredient(createDietDto.getIngredient())
                 .calories(createDietDto.getCalories())
+                .user(user)
                 .imagen(uri)
                 .build());
 

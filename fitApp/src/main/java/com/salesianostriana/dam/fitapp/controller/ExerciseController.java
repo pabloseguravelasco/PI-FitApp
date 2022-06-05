@@ -10,6 +10,7 @@ import com.salesianostriana.dam.fitapp.model.dto.ExerciseDtoConverter;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
 import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
 import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
+import com.salesianostriana.dam.fitapp.security.users.services.UserEntityService;
 import com.salesianostriana.dam.fitapp.services.ExerciseService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import com.salesianostriana.dam.fitapp.utils.PaginationLinksUtils;
@@ -44,6 +45,7 @@ public class ExerciseController {
     private final StorageService storageService;
     private final UserEntityRepository userEntityRepository;
     private final PaginationLinksUtils paginationLinksUtils;
+    private final UserEntityService userEntityService;
 
 
     @PostMapping("/")
@@ -108,23 +110,15 @@ public class ExerciseController {
             return ResponseEntity.ok().body(service.listExerciseDto(user.getNickname()));
     }
 
-    @GetMapping("/favorite/")
-    public ResponseEntity<List<GetExerciseDto>> listFavorites(@AuthenticationPrincipal UserEntity user) {
-
-        return ResponseEntity.ok().body(userEntityRepository.findExercisesFav(user.getId())
-                .stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList()));
-    }
-
 
     @PostMapping("/favorite/{id}")
     public ResponseEntity<List<GetExerciseDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
 
-
         Optional<Exercise> exercise = exerciseRepository.findById(id);
 
         if (!exercise.isEmpty()) {
-            List<Exercise> exerciseFavList = userEntityRepository.findExercisesFav(user.getId());
-            exerciseFavList.add(exercise.get());
+
+            userEntityService.saveFavoriteExercise(user, id);
             return ResponseEntity.ok().build();
 
         } else {

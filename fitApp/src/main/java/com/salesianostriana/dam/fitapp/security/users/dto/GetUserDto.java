@@ -2,6 +2,8 @@ package com.salesianostriana.dam.fitapp.security.users.dto;
 
 import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.Exercise;
+import com.salesianostriana.dam.fitapp.model.dto.GetDietDto;
+import com.salesianostriana.dam.fitapp.model.dto.GetExerciseDto;
 import lombok.*;
 
 
@@ -23,9 +25,8 @@ public class GetUserDto {
     private String role;
     private String password;
     private String avatar;
-
-    private List<Diet> listFavDiets;
-    private List<Exercise> listFavExercises;
+    private List<GetDietDto> listFavDiets;
+    private List<GetExerciseDto> listFavExercises;
 
 
 
