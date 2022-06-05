@@ -12,13 +12,20 @@ import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
 import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
 import com.salesianostriana.dam.fitapp.services.ExerciseService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
+import com.salesianostriana.dam.fitapp.utils.PaginationLinksUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +43,7 @@ public class ExerciseController {
     private final ExerciseRepository exerciseRepository;
     private final StorageService storageService;
     private final UserEntityRepository userEntityRepository;
+    private final PaginationLinksUtils paginationLinksUtils;
 
 
     @PostMapping("/")
@@ -56,8 +64,16 @@ public class ExerciseController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(service.findAll().stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList()));
+    public ResponseEntity<Page<GetExerciseDto>>findAll(@PageableDefault(size = 30) Pageable pageable, HttpServletRequest request) {
+
+        Page<GetExerciseDto> exerciseDtos = exerciseRepository.findAll(pageable)
+                .map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto);
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(request.getRequestURL().toString());
+
+        return ResponseEntity.ok().header("link",
+                        paginationLinksUtils.createLinkHeader(exerciseDtos, uriBuilder))
+                .body(exerciseDtos);
     }
 
 
