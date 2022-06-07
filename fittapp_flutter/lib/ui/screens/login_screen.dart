@@ -19,14 +19,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late AuthRepository authRepository;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nickController = TextEditingController();
+  TextEditingController nicknameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
-    nickController.text = "PabloSeg";
-    passwordController.text = "Pablo@123";
+    nicknameController.text = "PabloSegurita";
+    passwordController.text = "1234";
     super.initState();
   }
 
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               margin: const EdgeInsets.only(top: 50),
               child: TextFormField(
-                controller: nickController,
+                controller: nicknameController,
                 decoration: const InputDecoration(
                     suffixIcon: Icon(Icons.email),
                     suffixIconColor: Colors.white,
@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         final loginDto = LoginDto(
-                            nick: nickController.text,
+                            nickname: nicknameController.text,
                             password: passwordController.text);
                         BlocProvider.of<LoginBloc>(context)
                             .add(DoLoginEvent(loginDto));

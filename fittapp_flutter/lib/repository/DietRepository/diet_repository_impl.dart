@@ -26,7 +26,7 @@ class DietRepositoryImpl extends DietRepository {
     if (response.statusCode == 200) {
       return DietResponse.fromJson(json.decode(response.body)).content;
     } else {
-      throw Exception('Fail to load exercise');
+      throw Exception('Fail to load diet');
     }
   }
 }

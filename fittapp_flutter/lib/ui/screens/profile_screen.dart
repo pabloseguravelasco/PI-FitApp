@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.lock),
                   SizedBox(width: 4.0),
                   Text(
-                    usuarioDTO.nick,
+                    usuarioDTO.nickname,
                     style: TextStyle(color: Color.fromARGB(255, 255, 254, 254)),
                   ),
                   SizedBox(width: 12.0),
@@ -134,36 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                    
-                        Column(
-                          children: [
-                            Text(
-                              usuarioDTO.numeroSeguidores.toString(),
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              "Seguidores",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              usuarioDTO.numeroSeguidos.toString(),
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              "Seguidos",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0)),
-                            )
-                          ],
-                        ),
+                 
                       ],
                     ),
                   ),

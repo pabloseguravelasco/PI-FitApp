@@ -51,7 +51,7 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
   }
    Future<List<Exercise>> fetchExercise() async {
     final response = await http.get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/popular?api_key=1c0ce60ed8e0cd9f90ffb9b539b4c646&language=en-US&page=1'));
+        'https://fit-app-heroku.herokuapp.com/exercise/list'));
     if (response.statusCode == 200) {
       return ExerciseResponse.fromJson(jsonDecode(response.body)).content;
     } else {
@@ -86,11 +86,11 @@ class _ExerciseListScreenState extends State<ExerciseListScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.network(
-                  'https://image.tmdb.org/t/p/w500/' + exercise.texto,
+                  'https://image.tmdb.org/t/p/w500/' + exercise.text,
                   width: MediaQuery.of(context).size.width * 0.4),
               Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Text(exercise.titulo.toUpperCase(),
+                  child: Text(exercise.title.toUpperCase(),
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold))),
