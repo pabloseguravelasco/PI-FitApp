@@ -10,7 +10,13 @@ class DietScreen extends StatefulWidget {
 class _DietScreenState extends State<DietScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      backgroundColor:Colors.white24 ,
+      appBar: AppBar(
+        title: const Text('FIT APP'),
+        backgroundColor: Colors.red,
+      
+      ),
       
     );
   }

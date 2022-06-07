@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class DietListScreen extends StatefulWidget {
-  const DietListScreen({ Key? key }) : super(key: key);
+class ExerciseCreateScreen extends StatefulWidget {
+  const ExerciseCreateScreen({ Key? key }) : super(key: key);
 
   @override
-  State<DietListScreen> createState() => _DietListScreenState();
+  State<ExerciseCreateScreen> createState() => _ExerciseCreateScreenState();
 }
 
-class _DietListScreenState extends State<DietListScreen> {
+class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,6 @@ class _DietListScreenState extends State<DietListScreen> {
         backgroundColor: Colors.red,
       
       ),
-      
       
     );
   }

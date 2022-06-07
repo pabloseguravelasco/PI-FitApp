@@ -11,7 +11,13 @@ class ExerciseScreen extends StatefulWidget {
 class _ExerciseScreenState extends State<ExerciseScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      backgroundColor:Colors.white24 ,
+      appBar: AppBar(
+        title: const Text('FIT APP'),
+        backgroundColor: Colors.red,
+      
+      ),
       
     );
   }

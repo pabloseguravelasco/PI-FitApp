@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 return Scaffold(
+  backgroundColor:Colors.white24 ,
       appBar: AppBar(
         title: const Text('FIT APP'),
         backgroundColor: Colors.red,
@@ -33,18 +34,41 @@ return Scaffold(
   
 
      body: Column(
+       
        children: [
-         Padding(
-          padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: const Text('Ejercicios Recomendados',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold))),
-          
-         ),
+         
+         Stack(
+  children: <Widget>[
+    
+    
+    Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text( 
+        'EJERCICIOS RECOMENDADOS',
+        style: TextStyle(
+          fontSize: 20,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 4
+            ..color = Colors.red[700]!,
+        ),
+      ),
+    ),
+    
+    Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text(
+    'EJERCICIOS RECOMENDADOS',
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.red[100],
+        ),
+      ),
+    ),
+  ],
+),
            SizedBox(
+             
               height: MediaQuery.of(context).size.height * 0.45,
               child: FutureBuilder<List<Exercise>>(
                 future: items,
@@ -57,23 +81,35 @@ return Scaffold(
                   return const Center(child: CircularProgressIndicator());
                 },
               )),
-              Padding(
-          padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: const Text('Plan de Ejercicios',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold))),
-          
-         ),
-       ],
+           Container(
+             
+             alignment: Alignment.center,
+             padding: EdgeInsets.all(0),
+             child:ElevatedButton(
+               
+            child: Text('CREAR EJERCICIO'),
+            onPressed: () {
+                   Navigator.pushNamed(context, '/createExercise');
+                   
+               },
+            style: ElevatedButton.styleFrom(
+                
+                primary: Colors.red,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                textStyle: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold)),
+               
+            
+           )
+        
+        
+     ,
+),
+     ]
      ),
-
      
-    
-          
-        );
+);
   }
    Future<List<Exercise>> fetchExercise() async {
     final response = await http.get(Uri.parse(

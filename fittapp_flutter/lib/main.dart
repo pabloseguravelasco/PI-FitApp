@@ -1,5 +1,7 @@
+import 'package:fitapp_flutter/ui/screens/diet_create_screen.dart';
 import 'package:fitapp_flutter/ui/screens/diet_list_screen.dart';
 import 'package:fitapp_flutter/ui/screens/diet_screen.dart';
+import 'package:fitapp_flutter/ui/screens/exercise_create_screen.dart';
 import 'package:fitapp_flutter/ui/screens/exercise_list_screen.dart';
 import 'package:fitapp_flutter/ui/screens/exercise_screen.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
@@ -36,6 +38,9 @@ class MyApp extends StatelessWidget {
         '/exerciseList': (context) => const ExerciseListScreen(),
         '/diet': (context) => const DietScreen(),
         '/dietList': (context) => const DietListScreen(),
+        '/createExercise': (context) => const ExerciseCreateScreen(),
+        '/createDiet': (context) => const DietCreateScreen(),
+
       
 
       },
