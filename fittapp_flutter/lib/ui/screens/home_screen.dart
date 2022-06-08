@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:fitapp_flutter/models/exercise_response.dart';
-import 'package:fluid_action_card/FluidActionCard/fluid_action_card.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

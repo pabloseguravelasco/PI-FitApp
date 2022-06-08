@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fitapp_flutter/models/exercise_response.dart';
+
+import 'package:fitapp_flutter/models/user/user_dto.dart';
 import 'package:fitapp_flutter/repository/user_repository/user_repository.dart';
 import 'package:http/http.dart';
 

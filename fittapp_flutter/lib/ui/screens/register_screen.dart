@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController publicoController = TextEditingController();
+  
 
   @override
   void initState() {

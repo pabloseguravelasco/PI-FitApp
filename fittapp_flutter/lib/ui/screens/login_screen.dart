@@ -1,5 +1,5 @@
 import 'package:fitapp_flutter/bloc/login/login_bloc.dart';
-import 'package:fitapp_flutter/models/login_dto.dart';
+import 'package:fitapp_flutter/models/user/login_dto.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository_impl.dart';
 import 'package:flutter/material.dart';

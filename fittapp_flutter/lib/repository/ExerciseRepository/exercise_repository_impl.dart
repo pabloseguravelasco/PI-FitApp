@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fitapp_flutter/models/exercise_response.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -28,4 +28,11 @@ class ExerciseRepositoryImpl extends ExerciseRepository {
       throw Exception('Fail to load exercise');
     }
   }
+
+  @override
+  Future<ExerciseResponse> exercise(exerciseDto, String filePath) {
+    // TODO: implement exercise
+    throw UnimplementedError();
+  }
 }
+/**CREAR METODO DE CREAR EJERECICIO */

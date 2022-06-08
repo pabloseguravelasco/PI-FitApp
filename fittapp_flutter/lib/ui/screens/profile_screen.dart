@@ -1,5 +1,6 @@
 import 'package:fitapp_flutter/bloc/user/user_bloc.dart';
-import 'package:fitapp_flutter/models/exercise_response.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
+import 'package:fitapp_flutter/models/user/user_dto.dart';
 import 'package:fitapp_flutter/repository/user_repository/user_repository.dart';
 import 'package:fitapp_flutter/repository/user_repository/user_repository_impl.dart';
 import 'package:fitapp_flutter/ui/widgets/error_page.dart';

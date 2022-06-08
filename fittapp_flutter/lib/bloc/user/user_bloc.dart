@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fitapp_flutter/models/exercise_response.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
+import 'package:fitapp_flutter/models/user/user_dto.dart';
 import 'package:fitapp_flutter/repository/user_repository/user_repository.dart';
 
 part 'user_event.dart';

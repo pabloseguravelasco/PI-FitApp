@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:fitapp_flutter/models/diet_response.dart';
-import 'package:fitapp_flutter/models/exercise_response.dart';
+import 'package:fitapp_flutter/models/diet/diet_dto.dart';
+import 'package:fitapp_flutter/models/diet/diet_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -28,5 +28,11 @@ class DietRepositoryImpl extends DietRepository {
     } else {
       throw Exception('Fail to load diet');
     }
+  }
+
+  @override
+  Future<DietResponse> diet(DietDto dietDto, String filePath) {
+    // TODO: implement diet
+    throw UnimplementedError();
   }
 }
