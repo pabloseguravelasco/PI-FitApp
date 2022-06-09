@@ -19,13 +19,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late AuthRepository authRepository;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nicknameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
-    nicknameController.text = "PabloSegurita";
+    emailController.text = "pablo@gmail.com";
     passwordController.text = "1234";
     super.initState();
   }
@@ -132,16 +132,16 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               margin: const EdgeInsets.only(top: 50),
               child: TextFormField(
-                controller: nicknameController,
+                controller: emailController,
                 decoration: const InputDecoration(
                     suffixIcon: Icon(Icons.email),
                     suffixIconColor: Colors.white,
-                    hintText: 'Nombre de Usuario',
+                    hintText: 'Email',
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white))),
                 onSaved: (String? value) {},
                 validator: (String? value) {
-                  return (value == null) ? 'El Nick no puede estar vacio.' : null;
+                  return (value == null) ? 'El email no puede estar vacio.' : null;
                 },
               ),
             ),
@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         final loginDto = LoginDto(
-                            nickname: nicknameController.text,
+                            email: emailController.text,
                             password: passwordController.text);
                         BlocProvider.of<LoginBloc>(context)
                             .add(DoLoginEvent(loginDto));

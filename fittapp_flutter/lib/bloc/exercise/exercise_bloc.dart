@@ -2,7 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fitapp_flutter/models/exercise_Dto.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
 import 'package:image_picker/image_picker.dart';
 

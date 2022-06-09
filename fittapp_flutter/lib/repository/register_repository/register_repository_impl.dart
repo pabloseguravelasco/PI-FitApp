@@ -4,6 +4,8 @@ import 'package:fitapp_flutter/repository/register_repository/register_repositor
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
+
 
 import '../../constants.dart';
 
@@ -11,25 +13,30 @@ class RegisterRepositoryImpl extends RegisterRepository {
   @override
   Future<RegisterResponse> register(RegisterDto registerDto, filePath) async {
     Map<String, String> headers = {
-      'Content-Type': "application/json",
+      'Content-Type': "multipart/form-data",
     };
-    var uri = Uri.parse('${Constant.apiUrl}auth/register/');
-    var request = http.MultipartRequest('POST', uri);
+    var uri = Uri.parse('${Constant.apiUrl}/auth/register/');
+    final body = jsonEncode({
+      'nombre': registerDto.nombre,
+      'nick': registerDto.nick,
+      'email':registerDto.email,
+      'fechaNacimiento': registerDto.fechaNacimiento,
+      'password':registerDto.password,
+      'password2':registerDto.password
+    });
 
-    request.fields['nombre'] = registerDto.nombre;
-    request.fields['nick'] = registerDto.nick;
-    request.fields['email'] = registerDto.email;
-    request.fields['fechaNacimiento'] = registerDto.fechaNacimiento;
-    request.fields['password'] = registerDto.password;
-    request.fields['password2'] = registerDto.password;
-
-    request.files.add(await http.MultipartFile.fromPath('file', filePath));
+    final request = http.MultipartRequest('POST',uri)
+      ..files.add(http.MultipartFile.fromString('user', body, contentType: MediaType('application','json')))
+      ..files.add(await http.MultipartFile.fromPath('file', filePath))
+      ..headers.addAll(headers);
 
     var response = await request.send();
 
+    final responded = await http.Response.fromStream(response);
+
     if (response.statusCode == 201) {
       return RegisterResponse.fromJson(
-          jsonDecode(await response.stream.bytesToString()));
+          json.decode(responded.body));
     } else {
       throw Exception('Failed to register');
     }

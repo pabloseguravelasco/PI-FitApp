@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fitapp_flutter/bloc/exercise/exercise_bloc.dart';
-import 'package:fitapp_flutter/models/exercise_Dto.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository_impl.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
@@ -33,7 +33,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
   void initState() {
    
     exerciseRepository = ExerciseRepositoryImpl();
-
+    
     super.initState();
   }
 

@@ -29,4 +29,5 @@ class AuthRepositoryImpl extends AuthRepository {
     } else {
       throw Exception('Fail to login');
     }
+  
   }}

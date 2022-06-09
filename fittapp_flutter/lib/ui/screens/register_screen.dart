@@ -6,6 +6,7 @@ import 'package:fitapp_flutter/repository/auth_repository/auth_repository.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository_impl.dart';
 import 'package:fitapp_flutter/repository/register_repository/register_repository.dart';
 import 'package:fitapp_flutter/repository/register_repository/register_repository_impl.dart';
+import 'package:fitapp_flutter/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,7 +39,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     authRepository = AuthRepositoryImpl();
     registerRepository = RegisterRepositoryImpl();
-
+    nickController.text = "pablo";
+    nombreController.text = "Owo";
+    emailController.text = "a@a";
+    passwordController.text = "1234";
+    
     super.initState();
   }
 
@@ -62,11 +67,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   state is RegisterErrorState;
             }, listener: (context, state) async {
               if (state is SaveUserSuccessState) {
-                final prefs = await SharedPreferences.getInstance();
-
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MenuScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               } else if (state is RegisterErrorState) {
                 _showSnackbar(context, state.message);
@@ -200,46 +203,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   },
                                 ),
                               ),
-                             
+                              buildImg(filePath),
                               Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 width: deviceWidth - 100,
-                                child: BlocProvider(
-                                  create: (context) {
-                                    return ImagePickBlocBloc(
-                                        registerRepository);
-                                  },
-                                  child: BlocConsumer<ImagePickBlocBloc,
-                                          ImagePickBlocState>(
-                                      listenWhen: (context, state) {
-                                        return state
-                                            is ImageSelectedSuccessState;
-                                      },
-                                      listener: (context, state) {},
-                                      buildWhen: (context, state) {
-                                        return state is ImagePickBlocInitial ||
-                                            state is ImageSelectedSuccessState;
-                                      },
-                                      builder: (context, state) {
-                                        if (state
-                                            is ImageSelectedSuccessState) {
-                                          print(
-                                              'PATH ${state.pickedFile.path}');
-                                          return Column(children: [
-                                            Image.file(
-                                              File(state.pickedFile.path),
-                                              height: 100,
-                                            ),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.black,
-                                                ),
-                                                onPressed: () {},
-                                                child: const Text(
-                                                    'Actualizar Imagen'))
-                                          ]);
-                                        }
-                                        return Center(
+                                child: Center(
                                             child: ElevatedButton(
                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),) 
                                                 ,
@@ -253,9 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                                   .gallery));
                                                 },
                                                 child: const Text(
-                                                    'Seleccionar una Imagen')));
-                                      }),
-                                ),
+                                                    'Seleccionar una Imagen'))),
                               ),
                             ],
                           ),
@@ -265,7 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               TextButton(
                                 child: const Text(
                                   
-                                  'Incia Sesión',
+                                  'Inicia Sesión',
                                   style: TextStyle(fontSize: 14),
                                 ),
                                 onPressed: () {
@@ -275,8 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ],
                             mainAxisAlignment: MainAxisAlignment.center,
                           ),
-                          GestureDetector(
-                            onTap: () {
+                          ElevatedButton(onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 final registerDto = RegisterDto(
                                     nombre: nombreController.text,
@@ -288,27 +253,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 BlocProvider.of<ImagePickBlocBloc>(context)
                                     .add(SaveUserEvent(registerDto, filePath));
                               }
-                            },
-                            child: Container(
-                                height: 50,
-                                width: 400,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                child: TextButton(
-                                  child: const Text('FINALIZAR',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255))),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          Colors.redAccent),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/');
-                                  },
-                                )),
-                          )
+                            }, child: Text('Registrar'),)
                         ],
                       ),
                     )))));
+  }
+
+  buildImg(String filePath) {
+    if(filePath.isNotEmpty) {return Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Container(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image.file(File(filePath)),
+                                ),
+                              );}
+                              else{
+                                return Text('');
+                              }
   }
 }
