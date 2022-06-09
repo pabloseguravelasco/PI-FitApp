@@ -15,10 +15,10 @@ class RegisterRepositoryImpl extends RegisterRepository {
     Map<String, String> headers = {
       'Content-Type': "multipart/form-data",
     };
-    var uri = Uri.parse('${Constant.apiUrl}/auth/register/');
+    var uri = Uri.parse('${Constant.apiUrl}/auth/register');
     final body = jsonEncode({
       'nombre': registerDto.nombre,
-      'nick': registerDto.nick,
+      'nickname': registerDto.nickname,
       'email':registerDto.email,
       'fechaNacimiento': registerDto.fechaNacimiento,
       'password':registerDto.password,
@@ -34,7 +34,7 @@ class RegisterRepositoryImpl extends RegisterRepository {
 
     final responded = await http.Response.fromStream(response);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return RegisterResponse.fromJson(
           json.decode(responded.body));
     } else {

@@ -245,10 +245,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               if (_formKey.currentState!.validate()) {
                                 final registerDto = RegisterDto(
                                     nombre: nombreController.text,
-                                    nick: nickController.text,
+                                    nickname: nickController.text,
                                     email: emailController.text,
                                     password: passwordController.text,
-                                    fechaNacimiento: dateController.text,
+                                    fechaNacimiento: "1997-11-12",
                                  );
                                 BlocProvider.of<ImagePickBlocBloc>(context)
                                     .add(SaveUserEvent(registerDto, filePath));
