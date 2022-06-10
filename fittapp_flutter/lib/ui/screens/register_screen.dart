@@ -37,8 +37,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     authRepository = AuthRepositoryImpl();
     registerRepository = RegisterRepositoryImpl();
-    nickController.text = "pablo";
-    nombreController.text = "Owo";
+    nickController.text = "Pablito97";
+    nombreController.text = "Pablo";
     emailController.text = "a@a";
     passwordController.text = "1234";
 
