@@ -19,8 +19,8 @@ class RegisterResponse {
   late final String avatar;
   late final List<dynamic> listFavDiets;
   late final List<dynamic> listFavExercises;
-  
-  RegisterResponse.fromJson(Map<String, dynamic> json){
+
+  RegisterResponse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nickname = json['nickname'];
     fechaNacimiento = json['fechaNacimiento'];
@@ -29,7 +29,8 @@ class RegisterResponse {
     password = json['password'];
     avatar = json['avatar'];
     listFavDiets = List.castFrom<dynamic, dynamic>(json['listFavDiets']);
-    listFavExercises = List.castFrom<dynamic, dynamic>(json['listFavExercises']);
+    listFavExercises =
+        List.castFrom<dynamic, dynamic>(json['listFavExercises']);
   }
 
   Map<String, dynamic> toJson() {

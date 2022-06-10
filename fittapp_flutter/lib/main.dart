@@ -40,9 +40,6 @@ class MyApp extends StatelessWidget {
         '/dietList': (context) => const DietListScreen(),
         '/createExercise': (context) => const ExerciseCreateScreen(),
         '/createDiet': (context) => const DietCreateScreen(),
-
-      
-
       },
     );
   }
