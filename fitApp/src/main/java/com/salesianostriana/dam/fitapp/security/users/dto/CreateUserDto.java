@@ -18,8 +18,6 @@ public class CreateUserDto {
 
     private String nickname;
 
-    private LocalDate fechaNacimiento;
-
     @NotNull(message = "UserEntity.email.null")
     @NotBlank(message = "UserEntity.email.blank")
     private String email;

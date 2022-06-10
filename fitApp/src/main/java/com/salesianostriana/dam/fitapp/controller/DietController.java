@@ -1,11 +1,13 @@
 package com.salesianostriana.dam.fitapp.controller;
 
 import com.salesianostriana.dam.fitapp.errors.exception.DietNotFoundException;
+import com.salesianostriana.dam.fitapp.errors.exception.ExerciseNotFoundException;
 import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.DietRepository;
 import com.salesianostriana.dam.fitapp.model.Exercise;
 import com.salesianostriana.dam.fitapp.model.dto.*;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
 import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
 import com.salesianostriana.dam.fitapp.security.users.services.UserEntityService;
 import com.salesianostriana.dam.fitapp.services.DietService;
@@ -47,9 +49,14 @@ public class DietController {
                                     @AuthenticationPrincipal UserEntity user) throws IOException {
 
         Diet dietCreated = service.save(newDiet, file, user);
+        if (user.getRole().equals(UserRole.ADMIN)||(user.getRole().equals(UserRole.USER))) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(dietDtoConverter.convertDietToGetDietDto(dietCreated, user));
+            return ResponseEntity.status(HttpStatus.CREATED).
+            body(dietDtoConverter.convertDietToGetDietDto(dietCreated, user));
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
 
     }
 
@@ -103,14 +110,18 @@ public class DietController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDiet(@PathVariable Long id) {
+    public ResponseEntity<?> deleteDiet(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
         Diet diet = dietRepository.findById(id)
-                .orElseThrow(() -> new DietNotFoundException(id));
+                .orElseThrow(() -> new ExerciseNotFoundException(id));
 
-        dietRepository.delete(diet);
-        storageService.delete(diet.getImagen());
+        if(user.getRole().equals(UserRole.ADMIN))  {
+            dietRepository.delete(diet);
+            storageService.delete(diet.getImagen());
 
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

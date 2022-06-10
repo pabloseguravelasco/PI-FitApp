@@ -55,7 +55,7 @@ public class ExerciseController {
 
         Exercise exerciseCreated = service.save(newExercise, file, user);
 
-        if (user.getRole().equals(UserRole.ADMIN)) {
+        if (user.getRole().equals(UserRole.ADMIN)||(user.getRole().equals(UserRole.USER))) {
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseCreated, user));

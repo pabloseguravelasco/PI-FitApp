@@ -71,10 +71,6 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Diet> listFavDiets;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate fechaNacimiento;
-
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
