@@ -25,12 +25,12 @@ class ExerciseRepositoryImpl extends ExerciseRepository {
     if (response.statusCode == 200) {
       return ExerciseResponse.fromJson(json.decode(response.body)).content;
     } else {
-      throw Exception('Fail to load exercise');
+      throw Exception('Fail to load exercises');
     }
   }
 
   @override
-  Future<ExerciseResponse> exercise(ExerciseDto exerciseDto, filePath) async {
+  Future<ExerciseResponse> newExercise(ExerciseDto exerciseDto, filePath) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
     Map<String, String> header = {
@@ -57,5 +57,7 @@ class ExerciseRepositoryImpl extends ExerciseRepository {
       throw Exception('Fail to save exercise');
     }
   }
+
+ 
 }
 /**CREAR METODO DE CREAR EJERECICIO */

@@ -1,21 +1,26 @@
 part of 'exercise_bloc.dart';
 
-abstract class ImagePickBlocEvent extends Equatable {
-  const ImagePickBlocEvent();
+abstract class BlocExerciseEvent extends Equatable {
+  const BlocExerciseEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class SelectImageEvent extends ImagePickBlocEvent {
+class FetchExercises extends BlocExerciseEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class SelectImageExerciseEvent extends BlocExerciseEvent {
   final ImageSource source;
 
-  const SelectImageEvent(this.source);
+  const SelectImageExerciseEvent(this.source);
 
   @override
   List<Object> get props => [source];
 }
-class SaveExerciseEvent extends ImagePickBlocEvent{
+class SaveExerciseEvent extends BlocExerciseEvent{
   final ExerciseDto exerciseDto;
   final String path;
 

@@ -1,40 +1,60 @@
 part of 'exercise_bloc.dart';
 
-abstract class ImagePickBlocState extends Equatable {
-  const ImagePickBlocState();
+abstract class BlocExerciseState extends Equatable {
+  const BlocExerciseState();
 
   @override
   List<Object> get props => [];
 }
 
-class ImagePickBlocInitial extends ImagePickBlocState {}
+class BlocExerciseInitial extends BlocExerciseState {}
 
-class ExerciseLoadingState extends ImagePickBlocState {}
+class BlocExerciseFetched extends BlocExerciseState {
+  final List<Exercise> exercises;
 
-class SaveExerciseSuccessState extends ImagePickBlocState {}
+  const BlocExerciseFetched(this.exercises);
 
-class ExerciseErrorState extends ImagePickBlocState {
+  
+  @override
+  List<Object> get props => [exercises];
+}
+
+class BlocExerciseFetchedError extends BlocExerciseState {
   final String message;
 
-  const ExerciseErrorState(this.message);
+  const BlocExerciseFetchedError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class ImageSelectedSuccessState extends ImagePickBlocState {
+
+class NewExerciseSuccessState extends BlocExerciseState {}
+
+class NewExerciseLoadingState extends BlocExerciseState{}
+
+class NewExerciseErrorState extends BlocExerciseState {
+  final String message;
+
+  const NewExerciseErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ImageSelectedExerciseSuccessState extends BlocExerciseState {
   final XFile pickedFile;
 
-  const ImageSelectedSuccessState(this.pickedFile);
+  const ImageSelectedExerciseSuccessState(this.pickedFile);
 
   @override
   List<Object> get props => [pickedFile];
 }
 
-class ImageSelectedErrorState extends ImagePickBlocState {
+class ImageSelectedExerciseErrorState extends BlocExerciseState {
   final String message;
 
-  const ImageSelectedErrorState(this.message);
+  const ImageSelectedExerciseErrorState(this.message);
 
   @override
   List<Object> get props => [message];

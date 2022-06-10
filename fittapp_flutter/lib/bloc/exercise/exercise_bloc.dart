@@ -1,50 +1,58 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
+import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 part 'exercise_event.dart';
 part 'exercise_state.dart';
 
-class ImagePickBlocBloc extends Bloc<ImagePickBlocEvent, ImagePickBlocState> {
+class BlocExerciseBloc extends Bloc<BlocExerciseEvent, BlocExerciseState>{
+
   final ExerciseRepository exerciseRepository;
-  ImagePickBlocBloc(this.exerciseRepository) : super(ImagePickBlocInitial()) {
-    on<SelectImageEvent>(_onSelectImage);
-    on<SaveExerciseEvent>(_onSaveExercise);
+
+  BlocExerciseBloc(this.exerciseRepository) :super(BlocExerciseInitial()){
+
+    on<FetchExercises>(_exercisesFetched);
+    on<SelectImageExerciseEvent>(_onSelectImageExercise);
+    on<SaveExerciseEvent>(_saveExercise);
+
+
   }
-
-  void _onSelectImage(
-      SelectImageEvent event, Emitter<ImagePickBlocState> emit) async {
-    final ImagePicker _picker = ImagePicker();
-
+    void _exercisesFetched(BlocExerciseEvent event, Emitter<BlocExerciseState> emit) async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(
-        source: event.source,
-      );
-      if (pickedFile != null) {
-        emit(ImageSelectedSuccessState(pickedFile));
-      } else {
-        emit(const ImageSelectedErrorState('Error in image selection'));
-      }
-    } catch (e) {
-      emit(const ImageSelectedErrorState('Error in image selection'));
-    }
-  }
-
-  void _onSaveExercise(
-      SaveExerciseEvent event, Emitter<ImagePickBlocState> emit) async {
-    emit(ExerciseLoadingState());
-    try {
-      var exerciseResponse =
-          exerciseRepository.exercise(event.exerciseDto, event.path);
-      emit(SaveExerciseSuccessState());
+      final exercises = await exerciseRepository.fetchExercise();
+      emit(BlocExerciseFetched(exercises));
       return;
-    } catch (e) {
-      emit(ExerciseErrorState(e.toString()));
+    } on Exception catch (e) {
+      emit(BlocExerciseFetchedError(e.toString()));
     }
   }
+
+  void _saveExercise(SaveExerciseEvent event, Emitter<BlocExerciseState> emit) async {
+    emit(NewExerciseLoadingState());
+    try {
+      final ExerciseResponse = await exerciseRepository.newExercise(event.exerciseDto, event.path);
+      emit(NewExerciseSuccessState());
+      return;
+    }on Exception catch (e) {
+      emit(NewExerciseErrorState(e.toString()));
+    }
+  }
+
+  void _onSelectImageExercise(SelectImageExerciseEvent event, Emitter<BlocExerciseState> emit) async {
+    final ImagePicker _picker = ImagePicker();
+    try{
+      final XFile? pickedFile = await _picker.pickImage(source: event.source);
+      if (pickedFile != null) {
+        emit(ImageSelectedExerciseSuccessState(pickedFile));
+    } else {
+      emit(const ImageSelectedExerciseErrorState('Failed to select image'));
+    }
+    }catch (e){
+      emit(const ImageSelectedExerciseErrorState('Failed to select image'));
+    }
 }
-
-
-/**final ExerciseRepository exerciseRepository; */
+}

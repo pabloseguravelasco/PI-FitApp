@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
+import 'package:fitapp_flutter/bloc/exercise/exercise_bloc.dart';
 import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
+import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Exercise>> items;
+  late ExerciseRepository exerciseRepository;
 
 
   @override
@@ -29,16 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) {
-            return Bloc(exerciseRepository)
-              ..add(fetchExercise(e));
-          },
-        ),
-      ],
-    child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white24,
       appBar: AppBar(
         title: const Text('FIT APP'),
@@ -72,20 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        SizedBox(
-            height: MediaQuery.of(context).size.height * 0.45,
-            child: FutureBuilder<List<Exercise>>(
-              future: items,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _exerciseList(snapshot.data!);
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const Center(child: CircularProgressIndicator());
+      /////////////////////////////////////////////////////////////////
+      ///
+       SizedBox(
+            width: 800,
+            height: 800,
+            child: BlocProvider(
+              create: (context) {
+                return BlocExerciseBloc(exerciseRepository)
+                  ..add( FetchExercises());
               },
+              child: Scaffold(body: _createExercises (context)),
             )),
-        Container(
+       Container(
           alignment: Alignment.center,
           padding: EdgeInsets.all(0),
           child: ElevatedButton(
@@ -99,104 +90,100 @@ class _HomeScreenState extends State<HomeScreen> {
                 textStyle:
                     TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           ),
-        ),
-      ]),
-    )
-    );
+        ),]),
+   );}
+        
+  
+
+  Widget _createExercises(BuildContext context) {
+    return BlocBuilder<BlocExerciseBloc, BlocExerciseState>(
+        builder: (context, state) {
+      if (state is BlocExerciseInitial) {
+        return const CircularProgressIndicator();
+      } else if (state is BlocExerciseFetchedError) {
+        return Text('Fail to loading exercises');
+      } else if (state is BlocExerciseFetched) {
+        return _buildExercises(context, state.exercises);
+      } else {
+        return const Text('Not support');
+      }
+    });
   }
 
-  Widget _createExercise(BuildContext context) {
-  return BlocBuilder<>(
-    builder: (context, state) {
-      if (state is ) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (state is ) {
-        return (
-          message: state.message,
-          retry: () {
-            context
-                .watch<>()
-                .add(());
+   _buildExercises(BuildContext context, List<Exercise> exercises) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return _buildExerciseItem(exercises[index]);
           },
-        );
-      } else if (state is ) {
-        return (context, );
-      } else {
-        return const Text('Failed to create Exercise');
-      }
-    },
-  );
-}
+          itemCount: exercises.length,
+        ));
+  }
 
-Widget _createListExercise(BuildContext context, List<ExerciseDto> exercise) {
-  return SizedBox(
-    height: MediaQuery.of(context).size.height,
-    child: ListView.separated(
-      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      itemBuilder: (BuildContext context, int index) {
-        return (context, [index]);
-      },
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-      scrollDirection: Axis.vertical,
-      separatorBuilder: (context, index) => const VerticalDivider(
-        color: Colors.transparent,
-        width: 6.0,
-      ),
-      itemCount: .length,
+   _buildExerciseItem(Exercise exercise) {
+    final contentWidth = MediaQuery.of(context).size.width;
+  final contentHeight = MediaQuery.of(context).size.height;
+ 
+  String imageUrl =
+      exercise.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+
+  return Container(
+    decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(.3)))),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(imageUrl),
+            ),
+            title: Text(
+              exercise.title,
+              style: TextStyle(
+                  color: Colors.black.withOpacity(.8),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18),
+            ),
+            trailing: const Icon(Icons.more_vert),
+          ),
+        ),
+      
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: const <Widget>[
+                  Icon(Icons.favorite_border, size: 31),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Icon(Icons.comment_sharp, size: 31),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Icon(Icons.send, size: 31),
+                ],
+              ),
+              const Icon(Icons.bookmark_border, size: 31)
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          child: Text(
+            'Les ha gustado esta publicación',
+            style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(.8)),
+          ),
+        )
+      ],
     ),
   );
-}
 
-Widget _exercise(BuildContext contexto, Exercise data) {
-  
-}
-
- /* Future<List<Exercise>> fetchExercise() async {
-    final response = await http
-        .get(Uri.parse('https://fit-app-heroku.herokuapp.com/exercise/list'));
-    if (response.statusCode == 201) {
-      return ExerciseResponse.fromJson(jsonDecode(response.body)).content;
-    } else {
-      throw Exception('Failed to load the exercises');
-    }
-  }
-
-  Widget _exerciseList(List<Exercise> exerciseList) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.4,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: exerciseList.length,
-        itemBuilder: (context, index) {
-          return _exerciseItem(exerciseList.elementAt(index), index);
-        },
-      ),
-    );
-  }
-
-  Widget _exerciseItem(Exercise exercise, int index) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () =>
-            Navigator.pushNamed(context, '/exercise', arguments: exercise),
-        child: SizedBox(
-            width: 200,
-            height: 200,
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Image.network(exercise.imagen + exercise.text,
-                  width: MediaQuery.of(context).size.width * 0.4),
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(exercise.title.toUpperCase(),
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-            ])),
-      ),
-    );
-  }*/
+   }
 }

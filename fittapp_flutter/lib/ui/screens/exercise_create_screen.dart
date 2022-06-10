@@ -38,7 +38,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) {
-          return ImagePickBlocBloc(exerciseRepository);
+          return BlocExerciseBloc(exerciseRepository);
         },
         child: _createBody(context));
   }
@@ -48,29 +48,29 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
       body: Center(
         child: Container(
             padding: const EdgeInsets.all(20),
-            child: BlocConsumer<ImagePickBlocBloc, ImagePickBlocState>(
+            child: BlocConsumer<BlocExerciseBloc, BlocExerciseState>(
                 listenWhen: (context, state) {
-              return state is SaveExerciseSuccessState ||
-                  state is ExerciseErrorState;
+              return state is ImageSelectedExerciseSuccessState;
+      
             }, listener: (context, state) async {
-              if (state is SaveExerciseSuccessState) {
+              if (state is NewExerciseSuccessState) {
                 final prefs = await SharedPreferences.getInstance();
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
-              } else if (state is ExerciseErrorState) {
+              } else if (state is NewExerciseErrorState) {
                 _showSnackbar(context, state.message);
               }
             }, buildWhen: (context, state) {
-              return state is ImagePickBlocInitial ||
-                  state is ExerciseLoadingState ||
-                  state is ImageSelectedSuccessState;
+              return state is BlocExerciseInitial ||
+                  state is NewExerciseLoadingState ||
+                  state is ImageSelectedExerciseSuccessState;
             }, builder: (ctx, state) {
-              if (state is ImageSelectedSuccessState) {
+              if (state is ImageSelectedExerciseSuccessState) {
                 return buildForm(ctx, state.pickedFile.path);
-              } else if (state is ExerciseLoadingState) {
+              } else if (state is NewExerciseLoadingState) {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 return buildForm(ctx, '');
@@ -192,9 +192,9 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                                   Colors.redAccent),
                                         ),
                                         onPressed: () {
-                                          BlocProvider.of<ImagePickBlocBloc>(
+                                          BlocProvider.of<BlocExerciseBloc>(
                                                   context)
-                                              .add(const SelectImageEvent(
+                                              .add(const SelectImageExerciseEvent(
                                                   ImageSource.gallery));
                                         },
                                         child: const Text(
@@ -212,7 +212,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                   zone: zoneController.text,
                                   duration: durationController.text,
                                 );
-                                BlocProvider.of<ImagePickBlocBloc>(context).add(
+                                BlocProvider.of<BlocExerciseBloc>(context).add(
                                     SaveExerciseEvent(exerciseDto, filePath));
                               }
                             },
