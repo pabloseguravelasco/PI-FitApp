@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 
-
 import '../../constants.dart';
 
 class RegisterRepositoryImpl extends RegisterRepository {
@@ -19,14 +18,14 @@ class RegisterRepositoryImpl extends RegisterRepository {
     final body = jsonEncode({
       'nombre': registerDto.nombre,
       'nickname': registerDto.nickname,
-      'email':registerDto.email,
-      'fechaNacimiento': registerDto.fechaNacimiento,
-      'password':registerDto.password,
-      'password2':registerDto.password
+      'email': registerDto.email,
+      'password': registerDto.password,
+      'password2': registerDto.password
     });
 
-    final request = http.MultipartRequest('POST',uri)
-      ..files.add(http.MultipartFile.fromString('user', body, contentType: MediaType('application','json')))
+    final request = http.MultipartRequest('POST', uri)
+      ..files.add(http.MultipartFile.fromString('user', body,
+          contentType: MediaType('application', 'json')))
       ..files.add(await http.MultipartFile.fromPath('file', filePath))
       ..headers.addAll(headers);
 
@@ -35,8 +34,7 @@ class RegisterRepositoryImpl extends RegisterRepository {
     final responded = await http.Response.fromStream(response);
 
     if (response.statusCode == 200) {
-      return RegisterResponse.fromJson(
-          json.decode(responded.body));
+      return RegisterResponse.fromJson(json.decode(responded.body));
     } else {
       throw Exception('Failed to register');
     }

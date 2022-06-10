@@ -15,7 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu_screen.dart';
 
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -33,7 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  
 
   @override
   void initState() {
@@ -43,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     nombreController.text = "Owo";
     emailController.text = "a@a";
     passwordController.text = "1234";
-    
+
     super.initState();
   }
 
@@ -208,20 +206,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 margin: const EdgeInsets.only(top: 20),
                                 width: deviceWidth - 100,
                                 child: Center(
-                                            child: ElevatedButton(
-                                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),) 
-                                                ,
-                                                onPressed: () {
-                                                  BlocProvider.of<
-                                                              ImagePickBlocBloc>(
-                                                          context)
-                                                      .add(
-                                                          const SelectImageEvent(
-                                                              ImageSource
-                                                                  .gallery));
-                                                },
-                                                child: const Text(
-                                                    'Seleccionar una Imagen'))),
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          BlocProvider.of<ImagePickBlocBloc>(
+                                                  context)
+                                              .add(const SelectImageEvent(
+                                                  ImageSource.gallery));
+                                        },
+                                        child: const Text(
+                                            'Seleccionar una Imagen'))),
                               ),
                             ],
                           ),
@@ -230,7 +228,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               const Text('¿Ya estás registrado?'),
                               TextButton(
                                 child: const Text(
-                                  
                                   'Inicia Sesión',
                                   style: TextStyle(fontSize: 14),
                                 ),
@@ -241,35 +238,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ],
                             mainAxisAlignment: MainAxisAlignment.center,
                           ),
-                          ElevatedButton(onPressed: () {
+                          ElevatedButton(
+                            onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 final registerDto = RegisterDto(
-                                    nombre: nombreController.text,
-                                    nickname: nickController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    fechaNacimiento: "1997-11-12",
-                                 );
+                                  nombre: nombreController.text,
+                                  nickname: nickController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
                                 BlocProvider.of<ImagePickBlocBloc>(context)
                                     .add(SaveUserEvent(registerDto, filePath));
                               }
-                            }, child: Text('Registrar'),)
+                            },
+                            child: Text('REGISTRAR'),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 20),
+                                textStyle: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                          )
                         ],
                       ),
                     )))));
   }
 
   buildImg(String filePath) {
-    if(filePath.isNotEmpty) {return Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  child: Image.file(File(filePath)),
-                                ),
-                              );}
-                              else{
-                                return Text('');
-                              }
+    if (filePath.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Container(
+          width: 100,
+          height: 100,
+          child: Image.file(File(filePath)),
+        ),
+      );
+    } else {
+      return Text('');
+    }
   }
 }
