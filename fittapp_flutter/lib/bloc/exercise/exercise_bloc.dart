@@ -1,5 +1,3 @@
-
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
@@ -36,14 +34,14 @@ class ImagePickBlocBloc extends Bloc<ImagePickBlocEvent, ImagePickBlocState> {
 
   void _onSaveExercise(
       SaveExerciseEvent event, Emitter<ImagePickBlocState> emit) async {
-    emit(RegisterLoadingState());
+    emit(ExerciseLoadingState());
     try {
       var exerciseResponse =
           exerciseRepository.exercise(event.exerciseDto, event.path);
-      emit(SaveUserSuccessState());
+      emit(SaveExerciseSuccessState());
       return;
     } catch (e) {
-      emit(RegisterErrorState(e.toString()));
+      emit(ExerciseErrorState(e.toString()));
     }
   }
 }

@@ -11,15 +11,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExerciseCreateScreen extends StatefulWidget {
-  const ExerciseCreateScreen({ Key? key }) : super(key: key);
+  const ExerciseCreateScreen({Key? key}) : super(key: key);
 
   @override
   State<ExerciseCreateScreen> createState() => _ExerciseCreateScreenState();
 }
 
 class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
-
-
   late ExerciseRepository exerciseRepository;
   final _formKey = GlobalKey<FormState>();
 
@@ -29,11 +27,10 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
   TextEditingController durationController = TextEditingController();
   TextEditingController linkController = TextEditingController();
 
-   @override
+  @override
   void initState() {
-   
     exerciseRepository = ExerciseRepositoryImpl();
-    
+
     super.initState();
   }
 
@@ -46,34 +43,34 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
         child: _createBody(context));
   }
 
-   _createBody(BuildContext context) {
+  _createBody(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Container(
             padding: const EdgeInsets.all(20),
             child: BlocConsumer<ImagePickBlocBloc, ImagePickBlocState>(
                 listenWhen: (context, state) {
-              return state is SaveUserSuccessState ||
-                  state is RegisterErrorState;
+              return state is SaveExerciseSuccessState ||
+                  state is ExerciseErrorState;
             }, listener: (context, state) async {
-              if (state is SaveUserSuccessState) {
+              if (state is SaveExerciseSuccessState) {
                 final prefs = await SharedPreferences.getInstance();
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()),
                 );
-              } else if (state is RegisterErrorState) {
+              } else if (state is ExerciseErrorState) {
                 _showSnackbar(context, state.message);
               }
             }, buildWhen: (context, state) {
               return state is ImagePickBlocInitial ||
-                  state is RegisterLoadingState ||
+                  state is ExerciseLoadingState ||
                   state is ImageSelectedSuccessState;
             }, builder: (ctx, state) {
               if (state is ImageSelectedSuccessState) {
                 return buildForm(ctx, state.pickedFile.path);
-              } else if (state is RegisterLoadingState) {
+              } else if (state is ExerciseLoadingState) {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 return buildForm(ctx, '');
@@ -145,11 +142,11 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 margin: const EdgeInsets.only(top: 20),
                                 width: deviceWidth - 100,
                                 child: TextFormField(
-                                  controller: durationController,
+                                  controller: linkController,
                                   decoration: const InputDecoration(
                                       suffixIcon: Icon(Icons.email),
                                       suffixIconColor: Colors.white,
-                                      hintText: 'Duracion del ejericio (min)',
+                                      hintText: 'Vídeo del ejercicio (enlace)',
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.white))),
@@ -160,94 +157,63 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 width: deviceWidth - 100,
                                 child: TextFormField(
                                   controller: zoneController,
-                                  obscureText: true,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.vpn_key),
+                                      suffixIcon: Icon(Icons.person),
                                       suffixIconColor: Colors.white,
-                                      hintText: 'Zona a Trabajar',
+                                      hintText: 'Zona a ejercitar',
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.white))),
-                                  validator: (value) {
-                                    return (value == null || value.isEmpty)
-                                        ? 'Escribe una contraseña'
-                                        : null;
-                                  },
                                 ),
                               ),
-
-                             
                               Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 width: deviceWidth - 100,
-                                child: BlocProvider(
-                                  create: (context) {
-                                    return ImagePickBlocBloc(
-                                        exerciseRepository);
-                                  },
-                                  child: BlocConsumer<ImagePickBlocBloc,
-                                          ImagePickBlocState>(
-                                      listenWhen: (context, state) {
-                                        return state
-                                            is ImageSelectedSuccessState;
-                                      },
-                                      listener: (context, state) {},
-                                      buildWhen: (context, state) {
-                                        return state is ImagePickBlocInitial ||
-                                            state is ImageSelectedSuccessState;
-                                      },
-                                      builder: (context, state) {
-                                        if (state
-                                            is ImageSelectedSuccessState) {
-                                          print(
-                                              'PATH ${state.pickedFile.path}');
-                                          return Column(children: [
-                                            Image.file(
-                                              File(state.pickedFile.path),
-                                              height: 100,
-                                            ),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.black,
-                                                ),
-                                                onPressed: () {},
-                                                child: const Text(
-                                                    'Actualizar Imagen'))
-                                          ]);
-                                        }
-                                        return Center(
-                                            child: ElevatedButton(
-                                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),) 
-                                                ,
-                                                onPressed: () {
-                                                  BlocProvider.of<
-                                                              ImagePickBlocBloc>(
-                                                          context)
-                                                      .add(
-                                                          const SelectImageEvent(
-                                                              ImageSource
-                                                                  .gallery));
-                                                },
-                                                child: const Text(
-                                                    'Seleccionar una Imagen')));
-                                      }),
+                                child: TextFormField(
+                                  controller: durationController,
+                                  decoration: const InputDecoration(
+                                      suffixIcon: Icon(Icons.person),
+                                      suffixIconColor: Colors.white,
+                                      hintText: 'Duración del Ejercicio (min)',
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white))),
                                 ),
+                              ),
+                              buildImg(filePath),
+                              Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                width: deviceWidth - 100,
+                                child: Center(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          BlocProvider.of<ImagePickBlocBloc>(
+                                                  context)
+                                              .add(const SelectImageEvent(
+                                                  ImageSource.gallery));
+                                        },
+                                        child: const Text(
+                                            'Seleccionar una Imagen'))),
                               ),
                             ],
                           ),
-              
                           GestureDetector(
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
                                 final exerciseDto = ExerciseDto(
-                                    title: titleController.text,
-                                    text: textController.text,
-                                    link: linkController.text,
-                                    zone: zoneController.text,
-                                    duration: durationController.text,
-                                 );
-                                BlocProvider.of<ImagePickBlocBloc>(context)
-                                    .add(SaveExerciseEvent(exerciseDto, filePath));
+                                  title: titleController.text,
+                                  text: textController.text,
+                                  link: linkController.text,
+                                  zone: zoneController.text,
+                                  duration: durationController.text,
+                                );
+                                BlocProvider.of<ImagePickBlocBloc>(context).add(
+                                    SaveExerciseEvent(exerciseDto, filePath));
                               }
                             },
                             child: Container(
@@ -261,8 +227,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                           color: Color.fromARGB(
                                               255, 255, 255, 255))),
                                   style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          Colors.redAccent),
+                                      backgroundColor: Colors.redAccent),
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/');
                                   },
@@ -272,7 +237,19 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                       ),
                     )))));
   }
-}
- 
 
-  
+  buildImg(String filePath) {
+    if (filePath.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Container(
+          width: 100,
+          height: 100,
+          child: Image.file(File(filePath)),
+        ),
+      );
+    } else {
+      return Text('');
+    }
+  }
+}

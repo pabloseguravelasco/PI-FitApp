@@ -3,9 +3,8 @@ import 'package:fitapp_flutter/models/diet/diet_dto.dart';
 import 'package:fitapp_flutter/models/diet/diet_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'package:http/http.dart';
-import '../constants.dart';
+import '../../constants.dart';
 import 'diet_repository.dart';
 import 'dart:io';
 
@@ -14,12 +13,11 @@ class DietRepositoryImpl extends DietRepository {
 
   @override
   Future<List<Diet>> fetchDiet() async {
-  
     final prefs = await SharedPreferences.getInstance();
 
     String? token = prefs.getString('token');
-    final response = await _client
-        .get(Uri.parse('${Constants.baseUrl}/diet'), headers: {
+    final response =
+        await _client.get(Uri.parse('${Constant.apiUrl}/diet'), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $token"
     });

@@ -9,14 +9,14 @@ abstract class ImagePickBlocState extends Equatable {
 
 class ImagePickBlocInitial extends ImagePickBlocState {}
 
-class RegisterLoadingState extends ImagePickBlocState{}
+class ExerciseLoadingState extends ImagePickBlocState {}
 
-class SaveUserSuccessState extends ImagePickBlocState{}
+class SaveExerciseSuccessState extends ImagePickBlocState {}
 
-class RegisterErrorState extends ImagePickBlocState{
+class ExerciseErrorState extends ImagePickBlocState {
   final String message;
 
-  const RegisterErrorState(this.message);
+  const ExerciseErrorState(this.message);
 
   @override
   List<Object> get props => [message];
