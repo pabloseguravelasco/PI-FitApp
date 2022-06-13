@@ -64,6 +64,7 @@ class Exercise {
     required this.duration,
     required this.link,
     required this.zone,
+    required this.user,
   });
   late final int id;
   late final String title;
@@ -72,6 +73,7 @@ class Exercise {
   late final String duration;
   late final String link;
   late final String zone;
+  late final User user;
   
   Exercise.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -81,6 +83,7 @@ class Exercise {
     duration = json['duration'];
     link = json['link'];
     zone = json['zone'];
+    user = User.fromJson(json['user']);
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +95,52 @@ class Exercise {
     _data['duration'] = duration;
     _data['link'] = link;
     _data['zone'] = zone;
+    _data['user'] = user.toJson();
+    return _data;
+  }
+}
+
+class User {
+  User({
+    required this.id,
+    required this.nickname,
+    required this.email,
+    required this.role,
+    required this.password,
+    required this.avatar,
+     this.listFavDiets,
+     this.listFavExercises,
+  });
+  late final String id;
+  late final String nickname;
+  late final String email;
+  late final String role;
+  late final String password;
+  late final String avatar;
+  late final Null listFavDiets;
+  late final Null listFavExercises;
+  
+  User.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    nickname = json['nickname'];
+    email = json['email'];
+    role = json['role'];
+    password = json['password'];
+    avatar = json['avatar'];
+    listFavDiets = null;
+    listFavExercises = null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['nickname'] = nickname;
+    _data['email'] = email;
+    _data['role'] = role;
+    _data['password'] = password;
+    _data['avatar'] = avatar;
+    _data['listFavDiets'] = listFavDiets;
+    _data['listFavExercises'] = listFavExercises;
     return _data;
   }
 }
@@ -102,23 +151,23 @@ class Pageable {
     required this.offset,
     required this.pageNumber,
     required this.pageSize,
-    required this.unpaged,
     required this.paged,
+    required this.unpaged,
   });
   late final Sort sort;
   late final int offset;
   late final int pageNumber;
   late final int pageSize;
-  late final bool unpaged;
   late final bool paged;
+  late final bool unpaged;
   
   Pageable.fromJson(Map<String, dynamic> json){
     sort = Sort.fromJson(json['sort']);
     offset = json['offset'];
     pageNumber = json['pageNumber'];
     pageSize = json['pageSize'];
-    unpaged = json['unpaged'];
     paged = json['paged'];
+    unpaged = json['unpaged'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,8 +176,8 @@ class Pageable {
     _data['offset'] = offset;
     _data['pageNumber'] = pageNumber;
     _data['pageSize'] = pageSize;
-    _data['unpaged'] = unpaged;
     _data['paged'] = paged;
+    _data['unpaged'] = unpaged;
     return _data;
   }
 }
@@ -157,6 +206,3 @@ class Sort {
     return _data;
   }
 }
-
-
-

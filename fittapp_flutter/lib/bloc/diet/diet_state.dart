@@ -1,40 +1,60 @@
 part of 'diet_bloc.dart';
 
-abstract class ImagePickBlocState extends Equatable {
-  const ImagePickBlocState();
+abstract class BlocDietState extends Equatable {
+  const BlocDietState();
 
   @override
   List<Object> get props => [];
 }
 
-class ImagePickBlocInitial extends ImagePickBlocState {}
+class BlocDietInitial extends BlocDietState {}
 
-class RegisterLoadingState extends ImagePickBlocState{}
+class BlocDietFetched extends BlocDietState {
+  final List<Diet> diets;
 
-class SaveUserSuccessState extends ImagePickBlocState{}
+  const BlocDietFetched(this.diets);
 
-class RegisterErrorState extends ImagePickBlocState{
+  
+  @override
+  List<Object> get props => [diets];
+}
+
+class BlocDietFetchedError extends BlocDietState {
   final String message;
 
-  const RegisterErrorState(this.message);
+  const BlocDietFetchedError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class ImageSelectedSuccessState extends ImagePickBlocState {
+
+class NewDietSuccessState extends BlocDietState {}
+
+class NewDietLoadingState extends BlocDietState{}
+
+class NewDietErrorState extends BlocDietState {
+  final String message;
+
+  const NewDietErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ImageSelectedDietSuccessState extends BlocDietState {
   final XFile pickedFile;
 
-  const ImageSelectedSuccessState(this.pickedFile);
+  const ImageSelectedDietSuccessState(this.pickedFile);
 
   @override
   List<Object> get props => [pickedFile];
 }
 
-class ImageSelectedErrorState extends ImagePickBlocState {
+class ImageSelectedDietErrorState extends BlocDietState {
   final String message;
 
-  const ImageSelectedErrorState(this.message);
+  const ImageSelectedDietErrorState(this.message);
 
   @override
   List<Object> get props => [message];

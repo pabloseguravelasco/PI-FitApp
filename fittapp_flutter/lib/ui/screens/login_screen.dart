@@ -1,5 +1,6 @@
 import 'package:fitapp_flutter/bloc/login/login_bloc.dart';
 import 'package:fitapp_flutter/models/user/login_dto.dart';
+import 'package:fitapp_flutter/models/user/user_dto.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository_impl.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
-    emailController.text = "pablo@gmail.com";
+    emailController.text = "a@a";
     passwordController.text = "1234";
     super.initState();
   }
@@ -54,10 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 prefs.setString('token', state.loginResponse.token);
                 prefs.setString('avatar', state.loginResponse.avatar);
+                 prefs.setString('role', state.loginResponse.role);
+                  prefs.setString('nickname', state.loginResponse.nickname);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MenuScreen()),
+                  MaterialPageRoute(builder: (context) => const MenuScreen(), )
                 );
+                
               } else if (state is LoginErrorState) {
                 _showSnackbar(context, state.message);
               }
@@ -92,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Image.asset(
             
-              'assets/images/logo_titulo.png',
+              'assets/images/banner.png',
               height: 80,
             ),
            Stack(
@@ -192,10 +196,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Row(
               children: <Widget>[
-                const Text('Not a member?'),
+                const Text('¿No eres miembro?'),
                 TextButton(
                   child: const Text(
-                    'Register now',
+                    'Regístrate aquí',
                     style: TextStyle(fontSize: 12,
                     color: Colors.redAccent),
                     
@@ -230,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Expanded(
                           flex: 2,
                           child: const Text(
-                            '            Or continue',
+                            '         ó continua ',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,

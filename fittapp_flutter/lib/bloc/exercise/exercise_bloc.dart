@@ -18,6 +18,8 @@ class BlocExerciseBloc extends Bloc<BlocExerciseEvent, BlocExerciseState>{
     on<FetchExercises>(_exercisesFetched);
     on<SelectImageExerciseEvent>(_onSelectImageExercise);
     on<SaveExerciseEvent>(_saveExercise);
+    on<EditExerciseEvent>(_editExercise);
+    on<DeleteExerciseEvent>(_deleteExercise);
 
 
   }
@@ -39,6 +41,30 @@ class BlocExerciseBloc extends Bloc<BlocExerciseEvent, BlocExerciseState>{
       return;
     }on Exception catch (e) {
       emit(NewExerciseErrorState(e.toString()));
+      
+    }
+  }
+  void _editExercise(EditExerciseEvent event, Emitter<BlocExerciseState> emit) async {
+    emit(NewExerciseLoadingState());
+    try {
+      final ExerciseResponse = await exerciseRepository.editExercise(event.exerciseDto, event.path, event.id);
+      emit(NewExerciseSuccessState());
+      return;
+    }on Exception catch (e) {
+      emit(NewExerciseErrorState(e.toString()));
+      
+    }
+  }
+
+   void _deleteExercise(DeleteExerciseEvent event, Emitter<BlocExerciseState> emit) async {
+    emit(NewExerciseLoadingState());
+    try {
+     exerciseRepository.deleteExercise(event.id);
+      emit(NewExerciseSuccessState());
+      return;
+    }on Exception catch (e) {
+      emit(NewExerciseErrorState(e.toString()));
+      
     }
   }
 

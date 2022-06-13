@@ -29,3 +29,28 @@ class SaveExerciseEvent extends BlocExerciseEvent{
   @override
   List<Object> get props => [exerciseDto,path];
 }
+
+class EditExerciseEvent extends BlocExerciseEvent{
+  final ExerciseDto exerciseDto;
+  final String path;
+  final int id;
+
+  const EditExerciseEvent(this.exerciseDto,this.path,this.id);
+
+  
+
+  @override
+  List<Object> get props => [exerciseDto,path];
+}
+
+class DeleteExerciseEvent extends BlocExerciseEvent{
+
+  final int id;
+
+  const DeleteExerciseEvent(this.id);
+
+  
+
+  @override
+  List<Object> get props => [id];
+}

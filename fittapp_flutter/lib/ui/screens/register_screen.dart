@@ -111,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Image.asset(
-                            'assets/images/logo_titulo.png',
+                            'assets/images/banner.png',
                             height: 80,
                           ),
                           Column(

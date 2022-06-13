@@ -1,21 +1,26 @@
 part of 'diet_bloc.dart';
 
-abstract class ImagePickBlocEvent extends Equatable {
-  const ImagePickBlocEvent();
+abstract class BlocDietEvent extends Equatable {
+  const BlocDietEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class SelectImageEvent extends ImagePickBlocEvent {
+class FetchDiets extends BlocDietEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class SelectImageDietEvent extends BlocDietEvent {
   final ImageSource source;
 
-  const SelectImageEvent(this.source);
+  const SelectImageDietEvent(this.source);
 
   @override
   List<Object> get props => [source];
 }
-class SaveDietEvent extends ImagePickBlocEvent{
+class SaveDietEvent extends BlocDietEvent{
   final DietDto dietDto;
   final String path;
 
@@ -23,4 +28,16 @@ class SaveDietEvent extends ImagePickBlocEvent{
 
   @override
   List<Object> get props => [dietDto,path];
+}
+
+class DeleteDietEvent extends BlocDietEvent{
+
+  final int id;
+
+  const DeleteDietEvent(this.id);
+
+  
+
+  @override
+  List<Object> get props => [id];
 }

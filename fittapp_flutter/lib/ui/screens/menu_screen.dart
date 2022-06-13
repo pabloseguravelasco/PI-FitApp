@@ -1,4 +1,4 @@
-import 'package:fitapp_flutter/ui/screens/diet_list_screen.dart';
+
 import 'package:fitapp_flutter/ui/screens/exercise_list_screen.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
 import 'package:fitapp_flutter/ui/screens/profile_screen.dart';
@@ -18,7 +18,6 @@ class _MenuScreenState extends State<MenuScreen> {
 
   List<Widget> pages = [
     const HomeScreen(),
-    const DietListScreen(),
     const ProfileScreen(),
     const ExerciseListScreen(),
 
@@ -67,8 +66,9 @@ class _MenuScreenState extends State<MenuScreen> {
                 });
               },
             ),
-            GestureDetector(
-              child: Icon(Icons.food_bank_outlined,
+       
+           GestureDetector(
+              child: Icon(Icons.person,
                   color: _currentIndex == 1
                       ? Colors.red
                       : const Color(0xff000000)),
@@ -78,25 +78,14 @@ class _MenuScreenState extends State<MenuScreen> {
                 });
               },
             ),
-           GestureDetector(
-              child: Icon(Icons.person,
+            GestureDetector(
+              child: Icon(Icons.search,
                   color: _currentIndex == 2
                       ? Colors.red
                       : const Color(0xff000000)),
               onTap: () {
                 setState(() {
                   _currentIndex = 2;
-                });
-              },
-            ),
-            GestureDetector(
-              child: Icon(Icons.miscellaneous_services,
-                  color: _currentIndex == 3
-                      ? Colors.red
-                      : const Color(0xff000000)),
-              onTap: () {
-                setState(() {
-                  _currentIndex = 3;
                 });
               },
             ),

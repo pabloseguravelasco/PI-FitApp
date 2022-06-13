@@ -42,10 +42,24 @@ class NewExerciseErrorState extends BlocExerciseState {
   List<Object> get props => [message];
 }
 
+class EditExerciseLoadingState extends BlocExerciseState{
+  
+}
+
 class ImageSelectedExerciseSuccessState extends BlocExerciseState {
   final XFile pickedFile;
 
   const ImageSelectedExerciseSuccessState(this.pickedFile);
+
+  @override
+  List<Object> get props => [pickedFile];
+}
+
+class ImageSelectedEditExerciseSuccessState extends BlocExerciseState {
+  final XFile pickedFile;
+  final int id;
+
+  const ImageSelectedEditExerciseSuccessState(this.pickedFile, this.id);
 
   @override
   List<Object> get props => [pickedFile];

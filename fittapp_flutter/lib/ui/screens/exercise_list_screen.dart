@@ -1,27 +1,43 @@
 import 'dart:convert';
+import 'package:fitapp_flutter/bloc/exercise/exercise_bloc.dart';
 import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
-import 'package:fitapp_flutter/models/exercise/exercise_response.dart';
+import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
+import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository_impl.dart';
+import 'package:fitapp_flutter/ui/widgets/home_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+
+import '../../constants.dart';
 
 class ExerciseListScreen extends StatefulWidget {
   const ExerciseListScreen({ Key? key }) : super(key: key);
 
   @override
   State<ExerciseListScreen> createState() => _ExerciseListScreenState();
+  
 }
 
 class _ExerciseListScreenState extends State<ExerciseListScreen> {
+
+  late ExerciseRepository exerciseRepository;
+
+  @override
+  void initState() {
+    exerciseRepository = ExerciseRepositoryImpl();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-     final Size _size = MediaQuery.of(context).size;
+  
     return Scaffold(
       backgroundColor:Colors.white24 ,
+    
       appBar: AppBar(
-        title: const Text('FIT APP'),
-        backgroundColor: Colors.red,
-      
-      ),
+        automaticallyImplyLeading: false, 
+        title:  const HomeAppBar(),
+        backgroundColor: Colors.red),
+        
 
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -267,62 +283,22 @@ Container(
             ),
           ),
 
-             Padding(
-            padding: const EdgeInsets.fromLTRB(30, 30, 0, 10),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: const Text('Ejercicios',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold))),
-            
-           ),
+          
+             
 
-            Container(
-              alignment: Alignment.topLeft,
-              child: Column(
-                children: [
-                  Card(
-        child: SizedBox(
-          width: 150,
-          height: 200,
-          child: Padding
-          (  padding: const EdgeInsets.fromLTRB(50, 15, 0, 0),
-          child: Text('Ejercicio')),
-        ),
-      ),
-        Card(
-        child: SizedBox(
-          width: 150,
-          height: 200,
-          child: Padding
-          (  padding: const EdgeInsets.fromLTRB(50, 15, 0, 0),
-          child: Text('Ejercicio')),
-        ),
-      ),
-        Card(
-        child: SizedBox(
-          width: 150,
-          height: 200,
-          child: Padding
-          (  padding: const EdgeInsets.fromLTRB(50, 15, 0, 0),
-          child: Text('Ejercicio')),
-        ),
-      ),
-        Card(
-        child: SizedBox(
-          width: 150,
-          height: 200,
-          child: Padding
-          (  padding: const EdgeInsets.fromLTRB(50, 15, 0, 0),
-          child: Text('Ejercicio')),
-        ),
-      ),
-      
-                ],
-              ),
-      
-            ),
+             Container(
+                 alignment: Alignment.center,
+               child: SizedBox(
+                       width: MediaQuery.of(context).size.width,
+        height: 400,
+                    child: BlocProvider(
+                      create: (context) {
+                        return BlocExerciseBloc(exerciseRepository)
+                          ..add( FetchExercises());
+                      },
+                      child: Scaffold(body: _createExercises (context)),
+                    )),
+             ),
         ],),
       ),
      
@@ -337,54 +313,101 @@ Container(
 
     
   }
-   Future<List<Exercise>> fetchExercise() async {
-    final response = await http.get(Uri.parse(
-        'https://fit-app-heroku.herokuapp.com/exercise/list'));
-    if (response.statusCode == 200) {
-      return ExerciseResponse.fromJson(jsonDecode(response.body)).content;
-    } else {
-      throw Exception('Failed to load the exercises');
-    }
+     Widget _createExercises(BuildContext context) {
+    return BlocBuilder<BlocExerciseBloc, BlocExerciseState>(
+        builder: (context, state) {
+      if (state is BlocExerciseInitial) {
+        return const CircularProgressIndicator();
+      } else if (state is BlocExerciseFetchedError) {
+        return Text('Fail to loading exercises');
+      } else if (state is BlocExerciseFetched) {
+        return _buildExercises(context, state.exercises);
+      } else {
+        return const Text('Not support');
+      }
+    });
   }
 
-  Widget _exerciseList(List<Exercise> exerciseList) {
+   _buildExercises(BuildContext context, List<Exercise> exercises) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.4,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: exerciseList.length,
-        itemBuilder: (context, index) {
-          return _exerciseItem(exerciseList.elementAt(index), index);
-        },
-      ),
-    );
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return _buildExerciseItem(exercises[index]);
+          },
+          itemCount: exercises.length,
+        ));
   }
 
-  Widget _exerciseItem(Exercise exercise, int index) {
-    return Card(
-      margin: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () =>
-            Navigator.pushNamed(context, '/exercise', arguments: exercise),
-        child: SizedBox(
-            width: 200,
-            height: 200,
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Image.network(
-                  'https://image.tmdb.org/t/p/w500/' + exercise.text,
-                  width: MediaQuery.of(context).size.width * 0.4),
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(exercise.title.toUpperCase(),
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold))),
-            ])),
-      ),
-    );
-  }
+   _buildExerciseItem(Exercise exercise) {
+
+  String imageUrl =
+      exercise.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+
+ return Center(
+      child: GestureDetector(
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+               ListTile(
+                leading: Image.network(imageUrl, ) ,
+                title: Text(exercise.title,
+                style: TextStyle(fontSize: 25),),
+                subtitle: Text( exercise.text),
+              ),
+            
+            ],
+          ),
+        ),
+      onTap: () {
+                    Navigator.pushNamed(context, '/exercise', arguments: exercise);
+                  }
+                  
+   ));}
 }
+
+/**
+ * 
+ * 
+ * Container(
+            child: Card(
+
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 80,
+                    height: 80,
+                    child: Image.network(
+                      urlDiet,
+                    
+                    fit: BoxFit.fill,
+                    ),
+                    
+                    
+                  ),
+                  Text(urlTitle)
+                ],
+              ),
+              
+            ),
+          );Container(
+              alignment: Alignment.topLeft,
+              child: Column(
+                children: [
+                  Card(
+        child: SizedBox(
+          width: 150,
+          height: 200,
+          child: Padding
+          (  padding: const EdgeInsets.fromLTRB(50, 15, 0, 0),
+          child: Text('Ejercicio')),
+        ),
+      ),
     
+      
+                ],
+              ),
+      
+            ), */

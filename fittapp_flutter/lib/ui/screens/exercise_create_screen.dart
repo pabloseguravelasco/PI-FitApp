@@ -5,10 +5,11 @@ import 'package:fitapp_flutter/models/exercise/exercise_dto.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository.dart';
 import 'package:fitapp_flutter/repository/ExerciseRepository/exercise_repository_impl.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
+import 'package:fitapp_flutter/ui/screens/menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ExerciseCreateScreen extends StatefulWidget {
   const ExerciseCreateScreen({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class ExerciseCreateScreen extends StatefulWidget {
 
 class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
   late ExerciseRepository exerciseRepository;
+   late String path = '';
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController titleController = TextEditingController();
@@ -33,59 +35,46 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
 
     super.initState();
   }
+  
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+Widget build(BuildContext context) {
+    return Scaffold(
+      body: BlocProvider(
         create: (context) {
           return BlocExerciseBloc(exerciseRepository);
         },
-        child: _createBody(context));
-  }
-
-  _createBody(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-            padding: const EdgeInsets.all(20),
-            child: BlocConsumer<BlocExerciseBloc, BlocExerciseState>(
-                listenWhen: (context, state) {
-              return state is ImageSelectedExerciseSuccessState;
-      
-            }, listener: (context, state) async {
-              if (state is NewExerciseSuccessState) {
-                final prefs = await SharedPreferences.getInstance();
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (state is NewExerciseErrorState) {
-                _showSnackbar(context, state.message);
-              }
-            }, buildWhen: (context, state) {
-              return state is BlocExerciseInitial ||
-                  state is NewExerciseLoadingState ||
-                  state is ImageSelectedExerciseSuccessState;
-            }, builder: (ctx, state) {
-              if (state is ImageSelectedExerciseSuccessState) {
-                return buildForm(ctx, state.pickedFile.path);
-              } else if (state is NewExerciseLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return buildForm(ctx, '');
-              }
-            })),
+        child: BlocConsumer<BlocExerciseBloc, BlocExerciseState>(
+          listenWhen: (context, state) {
+            return state is ImageSelectedExerciseSuccessState;
+          },
+          listener: (context, state) {
+            if (state is NewExerciseSuccessState) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MenuScreen()));
+            } else if (state is NewExerciseErrorState) {
+              _showSnackBar(context, state.message);
+            }
+          },
+          buildWhen: (context, state) {
+            return state is BlocExerciseInitial ||
+                state is ImageSelectedExerciseSuccessState ||
+                state is NewExerciseLoadingState;
+          },
+          builder: (context, state) {
+            if (state is ImageSelectedExerciseSuccessState) {
+              path = state.pickedFile.path;
+              return buildForm(context, path);
+            } else if (state is NewExerciseLoadingState) {
+              return Center(child: const CircularProgressIndicator());
+            }
+            return buildForm(context, path);
+          },
+        ),
       ),
     );
   }
 
-  void _showSnackbar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  void _showSnackBar(BuildContext context, String message) {}
 
   Widget buildForm(BuildContext context, String filePath) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -102,7 +91,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Image.asset(
-                            'assets/images/logo_titulo.png',
+                            'assets/images/banner.png',
                             height: 80,
                           ),
                           Column(
@@ -116,7 +105,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 child: TextFormField(
                                   controller: titleController,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.person),
+                                      suffixIcon: Icon(Icons.title),
                                       suffixIconColor: Colors.white,
                                       hintText: 'Nombre del Ejercicio',
                                       focusedBorder: UnderlineInputBorder(
@@ -130,7 +119,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 child: TextFormField(
                                   controller: textController,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.person),
+                                      suffixIcon: Icon(Icons.text_fields),
                                       suffixIconColor: Colors.white,
                                       hintText: 'Descripción del Ejercicio',
                                       focusedBorder: UnderlineInputBorder(
@@ -144,7 +133,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 child: TextFormField(
                                   controller: linkController,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.email),
+                                      suffixIcon: Icon(Icons.link),
                                       suffixIconColor: Colors.white,
                                       hintText: 'Vídeo del ejercicio (enlace)',
                                       focusedBorder: UnderlineInputBorder(
@@ -158,7 +147,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 child: TextFormField(
                                   controller: zoneController,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.person),
+                                      suffixIcon: Icon(Icons.accessibility_new),
                                       suffixIconColor: Colors.white,
                                       hintText: 'Zona a ejercitar',
                                       focusedBorder: UnderlineInputBorder(
@@ -172,7 +161,7 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                 child: TextFormField(
                                   controller: durationController,
                                   decoration: const InputDecoration(
-                                      suffixIcon: Icon(Icons.person),
+                                      suffixIcon: Icon(Icons.watch),
                                       suffixIconColor: Colors.white,
                                       hintText: 'Duración del Ejercicio (min)',
                                       focusedBorder: UnderlineInputBorder(
@@ -202,9 +191,9 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                               ),
                             ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
+                          ElevatedButton(
+                            onPressed: () {
+                                if (_formKey.currentState!.validate()) {
                                 final exerciseDto = ExerciseDto(
                                   title: titleController.text,
                                   text: textController.text,
@@ -216,26 +205,22 @@ class _ExerciseCreateScreenState extends State<ExerciseCreateScreen> {
                                     SaveExerciseEvent(exerciseDto, filePath));
                               }
                             },
-                            child: Container(
-                                height: 50,
-                                width: 400,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                child: TextButton(
-                                  child: const Text('FINALIZAR',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255))),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Colors.redAccent),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/');
-                                  },
-                                )),
+                                child: Text('FINALIZAR'),
+                                  style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.redAccent),
+                                        ),
+                            
+                                  
+                                )]),
+                           
+                            
+                         
                           )
-                        ],
+                        ,
                       ),
-                    )))));
+                    )));
   }
 
   buildImg(String filePath) {
