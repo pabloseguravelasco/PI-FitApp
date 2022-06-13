@@ -84,6 +84,25 @@ public class DietController {
             return ResponseEntity.ok().body(dietDtoConverter.convertDietToGetDietDto(dietOptional.get(),user));
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<GetDietDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname) {
+
+        if (nickname.isBlank()) {
+            return ResponseEntity.notFound().build();
+        } else
+            return ResponseEntity.ok().body(service.listDietDto(nickname));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<GetDietDto>> findAllDietUserCurrent(@AuthenticationPrincipal UserEntity user) {
+
+        if (user.getId() == null) {
+            return ResponseEntity.notFound().build();
+        } else
+            return ResponseEntity.ok().body(service.listDietDto(user.getNickname()));
+    }
+
+
 
 
     @PostMapping("/favorite/{id}")
@@ -112,7 +131,7 @@ public class DietController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDiet(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
         Diet diet = dietRepository.findById(id)
-                .orElseThrow(() -> new ExerciseNotFoundException(id));
+                .orElseThrow(() -> new DietNotFoundException(id));
 
         if(user.getRole().equals(UserRole.ADMIN))  {
             dietRepository.delete(diet);

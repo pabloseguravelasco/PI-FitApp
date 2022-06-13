@@ -2,6 +2,7 @@ package com.salesianostriana.dam.fitapp.controller;
 
 
 import com.salesianostriana.dam.fitapp.errors.exception.ExerciseNotFoundException;
+import com.salesianostriana.dam.fitapp.errors.exception.ListEntityNotFoundException;
 import com.salesianostriana.dam.fitapp.model.Exercise;
 import com.salesianostriana.dam.fitapp.model.ExerciseRepository;
 import com.salesianostriana.dam.fitapp.model.dto.CreateExerciseDto;
@@ -127,6 +128,20 @@ public class ExerciseController {
         }
 
     }
+
+   @PutMapping("/{id}")
+    public ResponseEntity<GetExerciseDto> editExercise(@PathVariable Long id, @RequestPart("file") MultipartFile file,@RequestPart("exercise")CreateExerciseDto exerciseDto,@AuthenticationPrincipal UserEntity user) throws Exception {
+
+       if (user.getRole().equals(UserRole.ADMIN)) {
+
+           Exercise exercisePre = exerciseDtoConverter.createGetExerciseDtoToExercise(exerciseDto, file);
+           Exercise exerciseAct = service.updateExercise(id, file, exerciseDto, user);
+           GetExerciseDto exerciseDto1 = exerciseDtoConverter.convertExerciseToGetExerciseDto(exerciseAct, user);
+           return ResponseEntity.ok().body(exerciseDto1);
+       } else {
+           return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+       }
+   }
 
 
 

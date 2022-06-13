@@ -23,6 +23,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,59 +96,53 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
     }
-}
-
-    /*@Override
-    public Optional<GetExerciseDto> updatePost (@PathVariable Long id, @RequestPart("file") MultipartFile file,
-                                                @RequestPart("exercise") CreateExerciseDto createExerciseDto, @AuthenticationPrincipal  UserEntity user) throws Exception{
-
-        if (file.isEmpty()){
-
-        Optional<Exercise> post = exerciseRepository.findById(id);
-
-        return post.map(m -> {
-            m.setTitle(createExerciseDto.getTitle());
-            m.setText(createExerciseDto.getText());
-            m.setImagen(m.getImagen());
-            exerciseRepository.save(m);
-            return exerciseDtoConverter.convertExerciseToGetExerciseDto(m, user);
-        });
-
-    }else{
-
-        Optional<Exercise> post = exerciseRepository.findById(id);
-
-        String name = StringUtils.cleanPath(String.valueOf(post.get().getImagen())).replace("http://localhost:8080/download/", "");
-
-        Path pa = storageService.load(name);
-
-        String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "");
-
-        Path path = Paths.get(filename);
-
-        storageService.delete(post.get().getImagen());
 
 
-        String newFilename = storageService.store(file);
+    @Override
+    public Exercise updateExercise(@PathVariable Long id, MultipartFile file,
+                                                  CreateExerciseDto createExerciseDto, UserEntity user) throws Exception {
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(newFilename)
-                .toUriString();
 
-        return post.map(m -> {
-            m.setTitle(createExerciseDto.getTitle());
-            m.setText(createExerciseDto.getText());
-            m.setImagen(uri);
-            exerciseRepository.save(m);
-            return exerciseDtoConverter.convertExerciseToGetExerciseDto(m, user);
 
-        });*/
+            Optional<Exercise> exercise = repository.findById(id);
+
+            String name = StringUtils.cleanPath(String.valueOf(exercise.get().getImagen())).replace("http://localhost:8080/download/", "");
+
+            Path pa = storageService.load(name);
+
+            String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "");
+
+            Path path = Paths.get(filename);
+
+            storageService.delete(exercise.get().getImagen());
+
+
+            String newFilename = storageService.store(file);
+
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/download/")
+                    .path(newFilename)
+                    .toUriString();
+
+            return exercise.map(m ->
+                    repository.save(m.builder()
+                            .id(id)
+                            .title(createExerciseDto.getTitle())
+                            .zone(createExerciseDto.getZone())
+                            .duration(createExerciseDto.getDuration())
+                            .imagen(uri)
+                            .text(createExerciseDto.getText())
+                            .link(createExerciseDto.getLink())
+                            .user(exercise.get().getUser())
+
+                            .build())).get();
 
 
 
 
 
+        }
+    }
 
 
 

@@ -11,7 +11,6 @@ import java.time.LocalDate;
 public class JwtUserResponse {
 
     private String nickname;
-    private LocalDate fechaNacimiento;
     private String email;
     private String avatar;
     private String token;

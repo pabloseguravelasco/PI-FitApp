@@ -5,6 +5,9 @@ import com.salesianostriana.dam.fitapp.model.Exercise;
 import com.salesianostriana.dam.fitapp.model.dto.CreateExerciseDto;
 import com.salesianostriana.dam.fitapp.model.dto.GetExerciseDto;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,6 +27,7 @@ public interface ExerciseService {
 
     List<GetExerciseDto> listExerciseDto(String nickname);
 
-   /* Optional<GetExerciseDto> updatePost(Long id, MultipartFile file,
-                                        CreateExerciseDto createExerciseDto, UserEntity user) throws Exception;*/
+    Exercise updateExercise ( Long id, MultipartFile file,
+                                            CreateExerciseDto createExerciseDto, UserEntity user) throws Exception;
+
 }

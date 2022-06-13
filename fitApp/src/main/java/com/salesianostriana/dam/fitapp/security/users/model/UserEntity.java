@@ -63,7 +63,7 @@ public class UserEntity implements UserDetails {
 
 
     @OneToMany(mappedBy = "user")
-    private List<Exercise> listaExercise;
+    private List<Exercise> listExercise;
 
     @OneToMany(mappedBy = "user")
     private List<Exercise> listFavExercises;

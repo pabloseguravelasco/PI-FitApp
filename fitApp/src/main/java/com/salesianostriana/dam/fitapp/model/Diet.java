@@ -19,7 +19,7 @@ public class Diet {
 
     private String title;
     private String ingredient;
-    private double calories;
+    private String calories;
     private String imagen;
 
 

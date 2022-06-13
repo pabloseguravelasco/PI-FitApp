@@ -56,19 +56,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .antMatchers(HttpMethod.GET, "/me").authenticated()
-                    .antMatchers(HttpMethod.GET,"/download/{filename:.+}").permitAll()
+                    .antMatchers(HttpMethod.GET,"/download/{filename:.+}/**").permitAll()
 
 
                 //USUARIOS
-                .antMatchers(HttpMethod.GET, "/profile/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/profile/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/user/**").permitAll()
+
 
                 //EJERCICIOS
+                .antMatchers(HttpMethod.GET, "/exercise/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/exercise/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/exercise/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/exercise/**").permitAll()
+
                 //DIETA
+                .antMatchers(HttpMethod.GET, "/diet/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/diet/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/diet/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/diet/**").permitAll()
 
 
 
-                    .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated();
 
 

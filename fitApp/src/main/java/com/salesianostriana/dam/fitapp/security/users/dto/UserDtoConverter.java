@@ -28,11 +28,7 @@ public class UserDtoConverter{
 
     public GetUserDto convertUserEntityToGetUserDto(UserEntity user) {
 
-        String uri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/download/")
-                .path(user.getAvatar())
-                .toUriString();
+
 
         return GetUserDto.builder()
                 .id(user.getId())
@@ -40,9 +36,45 @@ public class UserDtoConverter{
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .password(user.getPassword())
-                .avatar(uri)
+                .avatar(user.getAvatar())
                 .listFavExercises(userEntityRepository.findExercisesFav(user.getId()).stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList()))
                 .listFavDiets(userEntityRepository.findDietsFav(user.getId()).stream().map(dietDtoConverter::convertListDietToListGetDietDto).collect(Collectors.toList()))
+                .build();
+
+
+
+
+    }
+
+    public GetUserDto convertUserEntityToGetUserDtoWithoutList(UserEntity user) {
+
+
+
+        return GetUserDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .password(user.getPassword())
+                .avatar(user.getAvatar())
+                .build();
+
+
+
+
+    }
+
+
+    public GetUserDto convertListUserToListGetUserDto(UserEntity user) {
+
+
+
+        return GetUserDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .avatar(user.getAvatar())
+
                 .build();
 
 

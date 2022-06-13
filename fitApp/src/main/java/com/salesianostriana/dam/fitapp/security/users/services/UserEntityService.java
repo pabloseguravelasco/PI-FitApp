@@ -67,7 +67,6 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                     .password(passwordEncoder.encode(newUser.getPassword()))
                     .avatar(uri)
                     .nickname(newUser.getNickname())
-                    .fechaNacimiento(newUser.getFechaNacimiento())
                     .email(newUser.getEmail())
                     .role(UserRole.ADMIN)
                     .build();
@@ -87,7 +86,6 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
             user.setEmail(createuserDto.getEmail());
             user.setPassword(createuserDto.getPassword());
             user.setNickname(createuserDto.getNickname());
-            user.setFechaNacimiento(createuserDto.getFechaNacimiento());
             user.setAvatar(createuserDto.getAvatar());
 
             userEntityRepository.save(user);
@@ -119,7 +117,6 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
             user.setEmail(createuserDto.getEmail());
             user.setPassword(createuserDto.getPassword());
             user.setNickname(createuserDto.getNickname());
-            user.setFechaNacimiento(createuserDto.getFechaNacimiento());
             user.setAvatar(uri);
 
             userEntityRepository.save(user);
