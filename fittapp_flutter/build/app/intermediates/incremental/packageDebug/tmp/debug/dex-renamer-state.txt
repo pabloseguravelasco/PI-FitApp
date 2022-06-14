@@ -1,4 +1,0 @@
-#Fri Jun 10 10:10:55 CEST 2022
-base.0=C\:\\Users\\segura.vepab21\\Desktop\\PI-FitApp\\fittapp_flutter\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

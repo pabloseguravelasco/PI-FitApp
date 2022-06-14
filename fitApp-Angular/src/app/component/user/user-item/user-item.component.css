@@ -1,0 +1,31 @@
+.gasolinera-card {
+    width: 800px;
+    justify-content: space-between;
+    border-style: solid;
+    border-color: rgb(63, 111, 199);
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    
+    
+    
+
+   
+}
+img{
+
+    border-radius: 5%;
+    
+}
+
+.gasolienra-image{
+    display: flex;
+    
+}
+
+button {
+    display: table-cell;
+    width: 100px;
+  }
+
+

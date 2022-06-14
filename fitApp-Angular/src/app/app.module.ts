@@ -6,7 +6,7 @@ import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login/login.component";
+import { LoginComponent } from "./component/login/login.component";
 import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialImportsModule } from './modules/material-imports.module';

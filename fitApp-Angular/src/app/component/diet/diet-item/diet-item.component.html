@@ -1,0 +1,24 @@
+
+    <mat-card class="diet-card" >
+        <mat-card-content class= "diet-content">
+
+            <h2>{{dietInput.rotulo}}</h2>
+
+            <h4><strong>Provincia:</strong>  <div class="ellipsis">{{dietInput.provincia}}</div></h4>
+          
+            <h4><strong>Dirección:</strong> <div class="ellipsis">{{dietInput.direccion}}</div></h4>
+           
+            <h4><strong>Código Postal:</strong> <div class="ellipsis">{{dietInput.cP}}</div></h4>
+            
+            <h4><strong>Horario:</strong> <div class="ellipsis">{{dietInput.horario}}</div></h4>
+
+            <button mat-raised-button color="primary" (click)="openDialogDetail()">Ver más</button>
+            
+        </mat-card-content>
+        
+        <div class= "diet-image"><img src="https://www.elindependiente.com/wp-content/uploads/2018/06/ballenoil3-980x550.jpg" width="520px" alt="imgGasolinera"></div>
+    </mat-card>
+    
+
+
+
