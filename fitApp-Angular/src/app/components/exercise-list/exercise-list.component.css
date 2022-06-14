@@ -1,0 +1,11 @@
+.scroll-container {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.movie-item {
+    min-width: 200px;
+    margin-right: 10px;
+}

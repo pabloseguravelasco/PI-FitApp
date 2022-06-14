@@ -1,10 +1,17 @@
-import { RouterModule } from "@angular/router";
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./component/login/login.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ExerciseListComponent } from './components/exercise-list/exercise-list.component';
+import { LoginComponent } from './components/login/login.component';
 
-
-const appRoutes = [
-  { path: "", component: LoginComponent, pathMatch: "full" },
-
+const routes: Routes = [
+  {path: '', pathMatch: 'full', component: LoginComponent},
+  {path: 'exercise/list', component: ExerciseListComponent},
+ // {path: 'diet/list', component: DietListComponent},
+  
 ];
-export const routing = RouterModule.forRoot(appRoutes);
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

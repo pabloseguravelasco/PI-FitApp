@@ -1,0 +1,49 @@
+
+.exercise-card {
+    min-height: 300px;
+}
+
+.exercise-rate {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.exercise-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.exercise-overview {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block; 
+}
+
+.exercise-image {
+    width: 100%;
+    overflow: hidden;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.exercise-image:hover {
+    cursor: pointer;
+}
+
+.exercise-image img {
+    object-fit: cover;
+    transition: transform .5s ease;
+}
+
+.exercise-image:hover img {
+    transform: scale(1.3); /* 130% de la escala original */
+    transition: transform .5s ease;
+}

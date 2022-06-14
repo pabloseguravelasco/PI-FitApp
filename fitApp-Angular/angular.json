@@ -1,12 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "5ec7de06-43a6-4726-bf9b-c86d012bbf0d"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "fitAngular": {
+    "angular-popcorn": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fitAngular",
+            "outputPath": "dist/angular-popcorn",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "fitAngular:build:production"
+              "browserTarget": "angular-popcorn:build:production"
             },
             "development": {
-              "browserTarget": "fitAngular:build:development"
+              "browserTarget": "angular-popcorn:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "fitAngular:build"
+            "browserTarget": "angular-popcorn:build"
           }
         },
         "test": {
@@ -107,5 +104,8 @@
       }
     }
   },
-  "defaultProject": "fitAngular"
+  "defaultProject": "angular-popcorn",
+  "cli": {
+    "analytics": "ff1cc182-c188-43e4-88b4-8d23d485dcc9"
+  }
 }

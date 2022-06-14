@@ -1,0 +1,10 @@
+<mat-card class="exercise-card">
+    <mat-card-content>
+        <div class="exercise-image">
+            <img [src]="getExerciseImageUrl(exerciseInput)" height="200px" width="100%" />
+        </div>
+        <h3 class="exercise-title">{{exerciseInput.title}}</h3>
+        <p class="exercise-overview">{{exerciseInput.text}}</p>
+     
+    </mat-card-content>
+</mat-card>
