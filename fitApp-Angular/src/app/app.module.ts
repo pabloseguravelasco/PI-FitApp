@@ -13,6 +13,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
+import { DietListComponent } from './components/diet-list/diet-list.component';
+import { DietItemComponent } from './components/diet-item/diet-item.component';
 
 
 
@@ -21,6 +23,8 @@ import { LoginComponent } from './components/login/login.component';
     AppComponent,
     ExerciseListComponent,
     ExerciseItemComponent,
+    DietListComponent,
+    DietItemComponent,
     LoginComponent
 
    

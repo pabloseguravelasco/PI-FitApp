@@ -1,0 +1,10 @@
+<mat-card class="diet-card">
+    <mat-card-content>
+        <div class="diet-image">
+            <img [src]="getDietImageUrl(dietInput)" height="200px" width="100%" />
+        </div>
+        <h3 class="diet-title">{{dietInput.title}}</h3>
+        <p class="diet-ingredients">{{dietInput.ingredients}}</p>
+     
+    </mat-card-content>
+</mat-card>

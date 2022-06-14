@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DietListComponent } from './components/diet-list/diet-list.component';
 import { ExerciseListComponent } from './components/exercise-list/exercise-list.component';
 import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: LoginComponent},
   {path: 'exercise/list', component: ExerciseListComponent},
- // {path: 'diet/list', component: DietListComponent},
+  {path: 'diet/list', component: DietListComponent},
   
 ];
 
