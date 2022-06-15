@@ -74,8 +74,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: List.generate(user.listFavExercises.length, (index) {
           String urlExercise = user.listFavExercises
               .elementAt(index)
-              .imagen
-              .replaceAll("http://localhost:8080", Constant.apiUrl);
+              .imagen;
+       
                String urlTitle = user.listFavExercises
               .elementAt(index)
               .title;
@@ -129,8 +129,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: List.generate(user.listFavDiets.length, (index) {
           String urlDiet = user.listFavDiets
               .elementAt(index)
-              .imagen
-              .replaceAll("http://localhost:8080", Constant.apiUrl);
+              .imagen;
+              
                 String urlTitle = user.listFavDiets
               .elementAt(index)
               .title;
@@ -188,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final contentHeight = MediaQuery.of(context).size.height;
 
     String imageUrlAvatar =
-        usuarioDTO.avatar.replaceAll("http://localhost:8080", Constant.apiUrl);
+        usuarioDTO.avatar;
 
     return SingleChildScrollView(
       child: SizedBox(

@@ -23,7 +23,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     
         final args = ModalRoute.of(context)!.settings.arguments as Exercise;
           String imageUrl =
-      args.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+      args.imagen;
         final bottomContentText = Text(
       args.text,
       style: TextStyle(fontSize: 18.0),

@@ -343,7 +343,7 @@ Container(
    _buildExerciseItem(Exercise exercise) {
 
   String imageUrl =
-      exercise.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+      exercise.imagen;
 
  return Center(
       child: GestureDetector(

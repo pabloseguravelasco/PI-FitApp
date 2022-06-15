@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
    _buildExerciseItem(Exercise exercise, BuildContext context) {
 
   String imageUrl =
-      exercise.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+      exercise.imagen;
  var nickname;
  var role;
 
@@ -357,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
    _buildDietItem(Diet diet, BuildContext context) {
 
   String imageUrl =
-      diet.imagen.replaceAll("http://localhost:8080", Constant.apiUrl);
+      diet.imagen;
  var nickname;
  var role;
 
