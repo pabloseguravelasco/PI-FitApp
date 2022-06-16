@@ -1,0 +1,554 @@
+{
+	"info": {
+		"_postman_id": "9b213d69-42cf-463a-9006-0799cfeedc4a",
+		"name": "FitApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ejercicio",
+			"item": [
+				{
+					"name": "Eliminar Ejercicio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/exercise/1",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"exercise",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Ejercicios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/exercise/list",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"exercise",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Ejercicio",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Ejercicio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/images/abdominal-sit-up.jpg"
+								},
+								{
+									"key": "exercise",
+									"contentType": "application/json",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/json/ejercicio_abdominal_sit_up.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/exercise/",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"exercise",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Ejercicio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/unknown.png"
+								},
+								{
+									"key": "exercise",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/json/ejercicio_abdominal_sit_up 2.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//exercise/2",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"exercise",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Ejercicio por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//exercise/3  \n",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"exercise",
+								"3  \n"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Crear Usuario",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var current_timestamp = new Date();",
+									"postman.setEnvironmentVariable(\"current_timestamp\", current_timestamp.toISOString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/images/avatar.jpg"
+								},
+								{
+									"key": "user",
+									"contentType": "application/json",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/json/User2.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/auth/register",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"pablo@gmail.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//auth/login",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuario actual",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/me",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com/list",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dieta",
+			"item": [
+				{
+					"name": "Crear Dieta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/images/Arroz-blanco-con-pollo-y-verduras.jpg"
+								},
+								{
+									"key": "diet",
+									"type": "file",
+									"src": "/C:/Users/pablo/OneDrive/Desktop/json/diet_1.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//diet/",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"diet",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Dieta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//diet/2",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"diet",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Dietas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//diet/list",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"diet",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guardar Dieta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Dieta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fit-app-heroku2.herokuapp.com//diet/2",
+							"protocol": "https",
+							"host": [
+								"fit-app-heroku2",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"",
+								"diet",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
