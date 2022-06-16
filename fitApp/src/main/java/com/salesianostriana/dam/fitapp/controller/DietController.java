@@ -13,6 +13,11 @@ import com.salesianostriana.dam.fitapp.security.users.services.UserEntityService
 import com.salesianostriana.dam.fitapp.services.DietService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import com.salesianostriana.dam.fitapp.utils.PaginationLinksUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/diet")
 @RequiredArgsConstructor
@@ -42,6 +48,20 @@ public class DietController {
     private final PaginationLinksUtils paginationLinksUtils;
     private final UserEntityService userEntityService;
     private final UserEntityRepository userEntityRepository;
+
+
+    @Operation(summary = "Crea una dieta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha creado una dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado la dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class
+                            ))
+                    })})
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestPart("file") MultipartFile file,
@@ -60,6 +80,21 @@ public class DietController {
 
     }
 
+    @Operation(summary = "Muestra listado de todas las dietas")
+    @ApiResponses( value = {@ApiResponse(responseCode = "200",
+            description = "Se han encontrado todas los dietas.",
+            content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))
+            }),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna dieta",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Diet.class
+                                    ))
+                    })})
+
     @GetMapping("/list")
     public ResponseEntity<Page<GetDietDto>>findAll(@PageableDefault(size = 30) Pageable pageable, HttpServletRequest request){
         Page<GetDietDto> dietDtos = dietRepository.findAll(pageable)
@@ -72,6 +107,18 @@ public class DietController {
                 .body(dietDtos);
     }
 
+    @Operation(summary = "Obtiene una dieta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado una dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class
+                            ))
+                    })})
 
     @GetMapping("/{id}")
     public ResponseEntity<GetDietDto> findDietByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user){
@@ -84,6 +131,19 @@ public class DietController {
             return ResponseEntity.ok().body(dietDtoConverter.convertDietToGetDietDto(dietOptional.get(),user));
     }
 
+
+   /* @Operation(summary = "Obtiene un listado de las dietas por nombre de usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado una dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class
+                            ))
+                    })})
     @GetMapping("/")
     public ResponseEntity<List<GetDietDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname) {
 
@@ -91,8 +151,20 @@ public class DietController {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.ok().body(service.listDietDto(nickname));
-    }
+    }*/
 
+    @Operation(summary = "Muestra todos las dietas del usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado una dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class
+                            ))
+                    })})
     @GetMapping("/me")
     public ResponseEntity<List<GetDietDto>> findAllDietUserCurrent(@AuthenticationPrincipal UserEntity user) {
 
@@ -103,7 +175,20 @@ public class DietController {
     }
 
 
-
+    @Operation(summary = "Añade una dieta a un listado")
+    @ApiResponses( value = {@ApiResponse(responseCode = "201",
+            description = "Se ha añadido el ejercicio al listado.",
+            content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Diet.class))
+            }),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la dieta",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Diet.class
+                                    ))
+                    })})
 
     @PostMapping("/favorite/{id}")
     public ResponseEntity<List<GetDietDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
@@ -126,7 +211,18 @@ public class DietController {
 
     }
 
-
+    @Operation(summary = "Borra una dieta.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha borrado la dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la dieta.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDiet(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {

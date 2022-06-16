@@ -15,6 +15,12 @@ import com.salesianostriana.dam.fitapp.security.users.services.UserEntityService
 import com.salesianostriana.dam.fitapp.services.ExerciseService;
 import com.salesianostriana.dam.fitapp.services.StorageService;
 import com.salesianostriana.dam.fitapp.utils.PaginationLinksUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,9 +39,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/exercise")
 @RequiredArgsConstructor
+@Tag( name = "Exercise", description = "Clase Controller de Exercise")
 
 public class ExerciseController {
 
@@ -48,6 +56,19 @@ public class ExerciseController {
     private final PaginationLinksUtils paginationLinksUtils;
     private final UserEntityService userEntityService;
 
+
+    @Operation(summary = "Crea un ejercicio.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha creado un ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha creado el ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
 
     @PostMapping("/")
     public ResponseEntity<?> create(@RequestPart("file") MultipartFile file,
@@ -66,6 +87,21 @@ public class ExerciseController {
 
     }
 
+    @Operation(summary = "Muestra listado de todas los ejercicios")
+    @ApiResponses( value = {@ApiResponse(responseCode = "200",
+            description = "Se han encontrado todos los ejercicios.",
+            content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))
+            }),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningun ejercicios",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Exercise.class
+                                    ))
+                    })})
+
     @GetMapping("/list")
     public ResponseEntity<Page<GetExerciseDto>>findAll(@PageableDefault(size = 30) Pageable pageable, HttpServletRequest request) {
 
@@ -79,7 +115,18 @@ public class ExerciseController {
                 .body(exerciseDtos);
     }
 
-
+    @Operation(summary = "Obtiene un ejercicio.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado un ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningun ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
     @GetMapping("/{id}")
     public ResponseEntity<GetExerciseDto> findExerciseByID(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
 
@@ -93,14 +140,40 @@ public class ExerciseController {
     }
 
 
+    /*@Operation(summary = "Obtiene un listado de  ejercicios por nombre de usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado un ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningun ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
     @GetMapping("/")
-    public ResponseEntity<List<GetExerciseDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname) {
+    public ResponseEntity<List<GetExerciseDto>> findByUserNickname(@RequestParam(value = "nickname") String nickname,  @AuthenticationPrincipal UserEntity user) {
 
+        Optional<UserEntity> user = userEntityRepository.findBy(nickname);
         if (nickname.isBlank()) {
             return ResponseEntity.notFound().build();
         } else
             return ResponseEntity.ok().body(service.listExerciseDto(nickname));
-    }
+    }*/
+
+    @Operation(summary = "Muestra todos los ejercicios del usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado un ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningun ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
 
     @GetMapping("/me")
     public ResponseEntity<List<GetExerciseDto>> findAllExerciseUserCurrent(@AuthenticationPrincipal UserEntity user) {
@@ -111,6 +184,20 @@ public class ExerciseController {
             return ResponseEntity.ok().body(service.listExerciseDto(user.getNickname()));
     }
 
+    @Operation(summary = "Añade un ejercicio a un listado")
+    @ApiResponses( value = {@ApiResponse(responseCode = "201",
+            description = "Se ha añadido el ejercicio al listado.",
+            content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))
+            }),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el ejercicio",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Exercise.class
+                                    ))
+                    })})
 
     @PostMapping("/favorite/{id}")
     public ResponseEntity<List<GetExerciseDto>> addFavorite(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {
@@ -129,6 +216,22 @@ public class ExerciseController {
 
     }
 
+
+    @Operation(summary = "Edita un ejercicio buscado por su id")
+    @ApiResponses( value = {@ApiResponse(responseCode = "201",
+            description = "Se ha editado el ejercicio.",
+            content = {
+                    @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))
+            }),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el ejercicio",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Exercise.class
+                                    ))
+                    })})
+
    @PutMapping("/{id}")
     public ResponseEntity<GetExerciseDto> editExercise(@PathVariable Long id, @RequestPart("file") MultipartFile file,@RequestPart("exercise")CreateExerciseDto exerciseDto,@AuthenticationPrincipal UserEntity user) throws Exception {
 
@@ -143,7 +246,18 @@ public class ExerciseController {
        }
    }
 
-
+    @Operation(summary = "Borra un ejercicio.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha borrado el ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el ejercicio.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Exercise.class
+                            ))
+                    })})
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteExercise(@PathVariable Long id, @AuthenticationPrincipal UserEntity user) {

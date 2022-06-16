@@ -40,22 +40,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource());
-        http
-                .csrf().disable()
-                    .exceptionHandling()
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                    .accessDeniedHandler(accessDeniedHandler)
+        http.csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
-                    .sessionManagement()
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
 
@@ -72,16 +69,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 //EJERCICIOS
-                .antMatchers(HttpMethod.GET, "/exercise/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/exercise/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/exercise/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/exercise/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/exercise/**").authenticated()
 
                 //DIETA
-                .antMatchers(HttpMethod.GET, "/diet/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/diet/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/diet/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/diet/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/diet/**").authenticated()
 
 
 
@@ -107,9 +104,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(""));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.setAllowedHeaders(Collections.singletonList(""));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

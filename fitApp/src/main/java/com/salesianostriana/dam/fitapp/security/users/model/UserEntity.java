@@ -74,11 +74,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
 
-    @Builder.Default
-    private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
