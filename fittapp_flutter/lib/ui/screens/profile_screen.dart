@@ -97,7 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     
                     
                   ),
-                  Text(urlTitle)
+                  Text(urlTitle,
+                  style: TextStyle(fontSize: 8),)
                 ],
               ),
               
@@ -151,7 +152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     
                     
                   ),
-                  Text(urlTitle)
+                  Text(urlTitle,
+                  style: TextStyle(fontSize: 8))
                 ],
               ),
               
