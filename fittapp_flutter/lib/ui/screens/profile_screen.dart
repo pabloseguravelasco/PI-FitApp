@@ -244,6 +244,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               fontStyle: FontStyle.italic,
                                                ),
                                               ),
+
+                                           Text(usuarioDTO.email,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontStyle: FontStyle.italic,
+                                               ),
+                                              ),
+
+                                             
                                      
                                     ])),
                           ),

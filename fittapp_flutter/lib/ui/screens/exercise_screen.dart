@@ -26,7 +26,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       args.imagen;
         final bottomContentText = Text(
       args.text,
-      style: TextStyle(fontSize: 18.0),
+      style: TextStyle(fontSize: 18.0,
+      color: Colors.black),
     );
      final bottomContentText2 =            Divider(
                             color: Colors.grey[800],
@@ -34,8 +35,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                           );
 
      final bottomContentText3 = Text(
-      " - Duración: "+args.duration,
-      style: TextStyle(fontSize: 11.0),
+      " - Duración: "+args.duration +" min.",
+      style: TextStyle(fontSize: 11.0,),
     );
      final bottomContentText4 =   Container(
                 alignment: Alignment.center,
@@ -75,6 +76,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     );
 
         final topContentText = Column(
+        
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 150.0),
@@ -83,7 +85,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
         SizedBox(height: 10.0),
         Text(
           args.title,
-          style: TextStyle(color: Colors.white, fontSize: 45.0),
+          style: TextStyle(color: Colors.black, fontSize: 45.0),
         ),
         SizedBox(height: 30.0),
      

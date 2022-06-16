@@ -61,12 +61,12 @@ class _DietScreenState extends State<DietScreen> {
         SizedBox(height: 150.0),
        
       
+        
         SizedBox(height: 10.0),
         Text(
           args.title,
-          style: TextStyle(color: Colors.white, fontSize: 45.0),
+          style: TextStyle(color: Colors.black, fontSize: 45.0),
         ),
-        SizedBox(height: 30.0),
      
       ],
     );
