@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.salesianostriana.dam.fitapp.model.Diet;
 import com.salesianostriana.dam.fitapp.model.Exercise;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
@@ -60,26 +61,20 @@ public class UserEntity implements UserDetails {
 
     private String nickname;
 
-    private boolean publico;
 
     @OneToMany(mappedBy = "user")
-    private List<Exercise> listaExercise;
+    private List<Exercise> listExercise;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate fechaNacimiento;
+    @OneToMany(mappedBy = "user")
+    private List<Exercise> listFavExercises;
 
-    /*private List<UserEntity> seguidores;
-
-    private List<UserEntity> seguidos;*/
+    @OneToMany(mappedBy = "user")
+    private List<Diet> listFavDiets;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
 
-    @Builder.Default
-    private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

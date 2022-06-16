@@ -1,0 +1,51 @@
+.scroll-container {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.exercise-item {
+    min-width: 200px;
+    margin-right: 10px;
+}
+
+.example-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: rgb(255, 0, 0);
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .sidenav-menu {
+      width: 300px;
+      color: rgb(255, 0, 0);
+  }
+
+  .sidenav-title {
+      text-align: center;
+      padding-top: 20px;
+      text-transform: uppercase;
+      width: 100%;
+      font-weight: bold;
+  }
+
+  .sidenav-icon {
+      margin-right: 20px;
+  }
+
+  a, a:active, a:hover, a:visited {
+      text-decoration: none;
+      color: #fc0000b9;
+      line-height: 20px;
+  }
+  .mad-list{
+
+    background-color: red;
+  }

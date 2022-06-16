@@ -1,6 +1,10 @@
 package com.salesianostriana.dam.fitapp.security.users.services;
 
 
+import com.salesianostriana.dam.fitapp.model.Diet;
+import com.salesianostriana.dam.fitapp.model.DietRepository;
+import com.salesianostriana.dam.fitapp.model.Exercise;
+import com.salesianostriana.dam.fitapp.model.ExerciseRepository;
 import com.salesianostriana.dam.fitapp.security.users.dto.GetUserDto;
 import com.salesianostriana.dam.fitapp.security.users.dto.UserDtoConverter;
 import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
@@ -9,8 +13,11 @@ import com.salesianostriana.dam.fitapp.services.base.BaseService;
 import com.salesianostriana.dam.fitapp.security.users.dto.CreateUserDto;
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
 import com.salesianostriana.dam.fitapp.security.users.repository.UserEntityRepository;
+import com.salesianostriana.dam.fitapp.services.impl.ExerciseServiceImpl;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service("userDetailsService")
@@ -32,6 +40,8 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
     private final StorageService storageService;
     private final UserEntityRepository userEntityRepository;
     private final UserDtoConverter userDtoConverter;
+    private final ExerciseRepository exerciseRepository;
+    private final DietRepository dietRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -57,10 +67,8 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                     .password(passwordEncoder.encode(newUser.getPassword()))
                     .avatar(uri)
                     .nickname(newUser.getNickname())
-                    .fechaNacimiento(newUser.getFechaNacimiento())
                     .email(newUser.getEmail())
-                    .publico(newUser.isPublico())
-                    .role(UserRole.USER)
+                    .role(UserRole.ADMIN)
                     .build();
             return save(userEntity);
         } else {
@@ -77,9 +85,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
             user.setNickname(createuserDto.getNickname());
             user.setEmail(createuserDto.getEmail());
             user.setPassword(createuserDto.getPassword());
-            user.setPublico(createuserDto.isPublico());
             user.setNickname(createuserDto.getNickname());
-            user.setFechaNacimiento(createuserDto.getFechaNacimiento());
             user.setAvatar(createuserDto.getAvatar());
 
             userEntityRepository.save(user);
@@ -110,9 +116,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
             user.setNickname(createuserDto.getNickname());
             user.setEmail(createuserDto.getEmail());
             user.setPassword(createuserDto.getPassword());
-            user.setPublico(createuserDto.isPublico());
             user.setNickname(createuserDto.getNickname());
-            user.setFechaNacimiento(createuserDto.getFechaNacimiento());
             user.setAvatar(uri);
 
             userEntityRepository.save(user);
@@ -120,6 +124,30 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
 
         }
+    }
+
+    public void saveFavoriteExercise (UserEntity user, Long id){
+
+        Optional<UserEntity> userEntity = findById(user.getId());
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+
+        if(!exercise.isEmpty() && !userEntity.isPresent()){
+            user.getListFavExercises().add(exercise.get());
+            save(user);
+        }
+
+    }
+
+    public void saveFavoriteDiet (UserEntity user, Long id){
+
+        Optional<UserEntity> userEntity = findById(user.getId());
+        Optional<Diet> diet = dietRepository.findById(id);
+
+        if(!diet.isEmpty() && !userEntity.isPresent()){
+            userEntity.get().getListFavDiets().add(diet.get());
+            save(user);
+        }
+
     }
 
 

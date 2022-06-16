@@ -43,6 +43,16 @@ dependencies:
   shared_preferences: ^2.0.13
   shared_preferences_web: ^2.0.3
   grad_text: ^0.0.3
+  blurrycontainer: 1.0.2
+  auto_size_text: ^3.0.0
+  url_launcher: ^6.0.4
+  select_form_field: "^2.2.0"
+  
+
+
+ 
+
+  
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -67,11 +77,11 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  uses-material-design: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+
 
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -79,6 +89,7 @@ flutter:
     - assets/images/logo_titulo.png
     - assets/images/fondo_init.jpg
     - assets/images/ejercicio.png
+    - assets/images/banner.png
     
   #   - images/a_dot_ham.jpeg
 

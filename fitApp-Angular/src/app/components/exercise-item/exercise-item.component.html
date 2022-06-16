@@ -1,0 +1,12 @@
+<mat-card class="exercise-card">
+    <mat-card-content>
+        <div class="exercise-image">
+            <img [src]="getExerciseImageUrl(exerciseInput)" height="200px" width="100%" />
+        </div>
+        <h3 class="exercise-title">{{exerciseInput.title}}</h3>
+        <p class="exercise-overview">{{exerciseInput.text}}</p>
+     
+        <button mat-raised-button color="warn" (click)="openDialogDetail()">Ver más</button>
+        <button mat-raised-button color="warn" (click)="doDelete(exerciseInput.id)" > <mat-icon>delete</mat-icon> </button>
+    </mat-card-content>
+</mat-card>

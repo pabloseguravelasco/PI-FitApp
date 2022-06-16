@@ -36,7 +36,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository repository;
     private final StorageService storageService;
     private final ExerciseDtoConverter exerciseDtoConverter;
-    private final ExerciseRepository exerciseRepository;
+
 
     @Override
     public Exercise save(CreateExerciseDto createExerciseDto, MultipartFile file, UserEntity user) throws IOException {
@@ -46,10 +46,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         String extension = StringUtils.getFilenameExtension(filename);
         BufferedImage originalImage = ImageIO.read(file.getInputStream());
-        BufferedImage imageScaled = storageService.scaledImg(originalImage,1024);
+        BufferedImage imageScaled = storageService.scaledImg(originalImage, 1024);
         OutputStream outputStream = Files.newOutputStream(storageService.load(filename));
-        ImageIO.write(imageScaled,extension, outputStream);
-
+        ImageIO.write(imageScaled, extension, outputStream);
 
 
         String uri = ServletUriComponentsBuilder
@@ -64,6 +63,9 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .text(createExerciseDto.getText())
                 .user(user)
                 .imagen(uri)
+                .link(createExerciseDto.getLink())
+                .duration(createExerciseDto.getDuration())
+                .zone(createExerciseDto.getZone())
                 .build());
 
 
@@ -74,82 +76,73 @@ public class ExerciseServiceImpl implements ExerciseService {
         return repository.findAll();
     }
 
+
     @Override
-    public  List<GetExerciseDto> findByPublico(boolean publico) {
+    public Optional<Exercise> findExerciseByID(Long id) {
 
-        List<Exercise> listaExercise = repository.findByPublico(publico);
-
-        return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
+        return repository.findById(id);
     }
 
     @Override
-    public Optional<Exercise> findPostByID(Long id){
-
-        return  repository.findById(id);
-    }
-
-    @Override
-    public List<Exercise> findByUserNickname(String nickname){
+    public List<Exercise> findByUserNickname(String nickname) {
 
         return repository.findByUserNickname(nickname);
     }
 
     @Override
-    public List<GetExerciseDto> listPostDto(String nickname){
+    public List<GetExerciseDto> listExerciseDto(String nickname) {
 
         List<Exercise> listaExercise = repository.findByUserNickname(nickname);
 
-       return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
+        return listaExercise.stream().map(exerciseDtoConverter::convertListExerciseToListGetExerciseDto).collect(Collectors.toList());
     }
+
 
     @Override
-    public Optional<GetExerciseDto> updatePost (@PathVariable Long id, @RequestPart("file") MultipartFile file,
-                                                @RequestPart("exercise") CreateExerciseDto createExerciseDto, @AuthenticationPrincipal  UserEntity user) throws Exception{
-
-        if (file.isEmpty()){
-
-        Optional<Exercise> post = exerciseRepository.findById(id);
-
-        return post.map(m -> {
-            m.setTitle(createExerciseDto.getTitle());
-            m.setText(createExerciseDto.getText());
-            m.setImagen(m.getImagen());
-            exerciseRepository.save(m);
-            return exerciseDtoConverter.convertExerciseToGetExerciseDto(m, user);
-        });
-
-    }else{
-
-        Optional<Exercise> post = exerciseRepository.findById(id);
-
-        String name = StringUtils.cleanPath(String.valueOf(post.get().getImagen())).replace("http://localhost:8080/download/", "");
-
-        Path pa = storageService.load(name);
-
-        String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "");
-
-        Path path = Paths.get(filename);
-
-        storageService.delete(post.get().getImagen());
+    public Exercise updateExercise(@PathVariable Long id, MultipartFile file,
+                                                  CreateExerciseDto createExerciseDto, UserEntity user) throws Exception {
 
 
-        String newFilename = storageService.store(file);
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(newFilename)
-                .toUriString();
+            Optional<Exercise> exercise = repository.findById(id);
 
-        return post.map(m -> {
-            m.setTitle(createExerciseDto.getTitle());
-            m.setText(createExerciseDto.getText());
-            m.setImagen(uri);
-            exerciseRepository.save(m);
-            return exerciseDtoConverter.convertExerciseToGetExerciseDto(m, user);
+            String name = StringUtils.cleanPath(String.valueOf(exercise.get().getImagen())).replace("http://localhost:8080/download/", "");
 
-        });
+            Path pa = storageService.load(name);
+
+            String filename = StringUtils.cleanPath(String.valueOf(pa)).replace("http://localhost:8080/download/", "");
+
+            Path path = Paths.get(filename);
+
+            storageService.delete(exercise.get().getImagen());
+
+
+            String newFilename = storageService.store(file);
+
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/download/")
+                    .path(newFilename)
+                    .toUriString();
+
+            return exercise.map(m ->
+                    repository.save(m.builder()
+                            .id(id)
+                            .title(createExerciseDto.getTitle())
+                            .zone(createExerciseDto.getZone())
+                            .duration(createExerciseDto.getDuration())
+                            .imagen(uri)
+                            .text(createExerciseDto.getText())
+                            .link(createExerciseDto.getLink())
+                            .user(exercise.get().getUser())
+
+                            .build())).get();
+
+
+
+
+
+        }
     }
-}
 
 
 
@@ -157,6 +150,3 @@ public class ExerciseServiceImpl implements ExerciseService {
 
 
 
-
-
-}

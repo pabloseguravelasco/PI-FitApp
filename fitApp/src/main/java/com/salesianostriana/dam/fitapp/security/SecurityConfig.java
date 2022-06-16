@@ -18,6 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -39,31 +45,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                    .exceptionHandling()
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                    .accessDeniedHandler(accessDeniedHandler)
+        http.cors().configurationSource(corsConfigurationSource());
+        http.csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
-                    .sessionManagement()
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
 
                 //REGISTRO/LOGIN
 
-                    .antMatchers(HttpMethod.POST, "/auth/register").anonymous()
+                    .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
                     .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .antMatchers(HttpMethod.GET, "/me").authenticated()
-                    .antMatchers(HttpMethod.GET,"/download/{filename:.+}").permitAll()
+                    .antMatchers(HttpMethod.GET,"/download/{filename:.+}/**").permitAll()
 
 
                 //USUARIOS
-                .antMatchers(HttpMethod.GET, "/profile/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/profile/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/user/**").permitAll()
 
-                    .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                //EJERCICIOS
+                .antMatchers(HttpMethod.GET, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/exercise/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/exercise/**").authenticated()
+
+                //DIETA
+                .antMatchers(HttpMethod.GET, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/diet/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/diet/**").authenticated()
+
+
+
+
+                .antMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .anyRequest().authenticated();
 
 
@@ -79,5 +99,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

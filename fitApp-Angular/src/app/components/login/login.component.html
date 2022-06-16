@@ -1,0 +1,25 @@
+
+<body>
+  
+  <img src="./assets/images/logo.png" width="900xp">
+   <div class="login">
+  <form class="custom-form" method="post">
+
+    <input
+      type="email"
+      [(ngModel)]="loginDto.email"
+      name="email"
+      placeholder="Email"
+      required="required"
+    />
+    <input
+      type="password"
+      [(ngModel)]="loginDto.password"
+      name="password"
+      placeholder="Contraseña"
+      required="required"
+    />
+    <button type="submit" (click)="doLogin()">Iniciar Sesión</button>
+  </form>
+</div>
+</body>

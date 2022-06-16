@@ -2,6 +2,7 @@ package com.salesianostriana.dam.fitapp.model;
 
 
 import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
+import com.salesianostriana.dam.fitapp.security.users.model.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,11 @@ public class Exercise {
     private String title;
     private String text;
     private String imagen;
+    private String duration;
+    private String link;
+    private String zone;
+
+
 
 
     @ManyToOne

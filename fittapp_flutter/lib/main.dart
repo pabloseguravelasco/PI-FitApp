@@ -1,3 +1,9 @@
+import 'package:fitapp_flutter/ui/screens/diet_create_screen.dart';
+import 'package:fitapp_flutter/ui/screens/diet_screen.dart';
+import 'package:fitapp_flutter/ui/screens/edit_exercise_screen.dart';
+import 'package:fitapp_flutter/ui/screens/exercise_create_screen.dart';
+import 'package:fitapp_flutter/ui/screens/exercise_list_screen.dart';
+import 'package:fitapp_flutter/ui/screens/exercise_screen.dart';
 import 'package:fitapp_flutter/ui/screens/home_screen.dart';
 import 'package:fitapp_flutter/ui/screens/init_screen.dart';
 import 'package:fitapp_flutter/ui/screens/login_screen.dart';
@@ -20,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/home',
+      initialRoute: '/init',
       routes: {
         '/': (context) => const MenuScreen(),
         '/login': (context) => const LoginScreen(),
@@ -28,6 +34,12 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/init': (context) => const InitScreen(),
+        '/exercise': (context) => const ExerciseScreen(),
+        '/exerciseList': (context) => const ExerciseListScreen(),
+        '/diet': (context) => const DietScreen(),
+        '/createExercise': (context) => const ExerciseCreateScreen(),
+        '/createDiet': (context) => const DietCreateScreen(),
+        '/editExercise':(context) => const ExerciseEditScreen()
       },
     );
   }

@@ -1,0 +1,16 @@
+<mat-card class="diet-card">
+    <mat-card-content>
+        <div class="diet-image">
+            <img [src]="getDietImageUrl(dietInput)" height="200px" width="100%" />
+        </div>
+        <h3 class="diet-title">{{dietInput.title}}</h3>
+      
+     
+        <button mat-raised-button color="warn" (click)="openDialogDetail()">Ver más</button>
+        <button mat-raised-button color="warn" (click)="doDelete(dietInput.id)" > <mat-icon>delete</mat-icon> </button>
+          
+        
+     
+    </mat-card-content>
+      
+</mat-card>

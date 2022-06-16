@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fitapp_flutter/models/login_dto.dart';
+import 'package:fitapp_flutter/models/user/login_dto.dart';
 import 'package:fitapp_flutter/models/login_response.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository.dart';
 

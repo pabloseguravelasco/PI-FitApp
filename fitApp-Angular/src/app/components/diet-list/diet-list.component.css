@@ -1,0 +1,12 @@
+.scroll-container {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.diet-item {
+    min-width: 200px;
+    margin-right: 10px;
+}
+

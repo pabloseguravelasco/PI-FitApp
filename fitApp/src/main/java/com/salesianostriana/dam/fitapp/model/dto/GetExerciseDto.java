@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.fitapp.model.dto;
 
+import com.salesianostriana.dam.fitapp.security.users.dto.GetUserDto;
+import com.salesianostriana.dam.fitapp.security.users.model.UserEntity;
 import lombok.*;
 
 @Getter
@@ -13,6 +15,9 @@ public class GetExerciseDto {
     private String title;
     private String text;
     private String imagen;
-    private String userNickname;
-    private boolean publico;
+    private String duration;
+    private String link;
+    private String zone;
+
+    private GetUserDto user;
 }

@@ -6,34 +6,19 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Expanded(
-          flex: 1,
-          child: Image.asset(
-            'assets/images/logo_titulo.png',
-            width: 100,
-          ),
-        ),
-        Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.add_box_outlined),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.send),
-                )
-              ],
-            ))
-      ]),
-    );
+      
+      margin: const EdgeInsets.only(top: 10),
+      child:  Padding(
+        padding: const EdgeInsets.all(80.0),
+        child: Image.asset(
+                'assets/images/banner.png',
+                height: 40,
+              ),
+      ),
+      );
   }
 
-  @override
-  Size get preferredSize => const Size.fromHeight(100);
+
+ @override
+  Size get preferredSize => const Size.fromHeight(60);
 }

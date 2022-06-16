@@ -6,6 +6,7 @@ import 'package:fitapp_flutter/repository/auth_repository/auth_repository.dart';
 import 'package:fitapp_flutter/repository/auth_repository/auth_repository_impl.dart';
 import 'package:fitapp_flutter/repository/register_repository/register_repository.dart';
 import 'package:fitapp_flutter/repository/register_repository/register_repository_impl.dart';
+import 'package:fitapp_flutter/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu_screen.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -32,12 +32,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController publicoController = TextEditingController();
 
   @override
   void initState() {
     authRepository = AuthRepositoryImpl();
     registerRepository = RegisterRepositoryImpl();
+    nickController.text = "Pablito97";
+    nombreController.text = "Pablo";
+    emailController.text = "a@a";
+    passwordController.text = "1234";
 
     super.initState();
   }
@@ -62,11 +65,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   state is RegisterErrorState;
             }, listener: (context, state) async {
               if (state is SaveUserSuccessState) {
-                final prefs = await SharedPreferences.getInstance();
-
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MenuScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               } else if (state is RegisterErrorState) {
                 _showSnackbar(context, state.message);
@@ -110,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Image.asset(
-                            'assets/images/logo_titulo.png',
+                            'assets/images/banner.png',
                             height: 80,
                           ),
                           Column(
@@ -200,62 +201,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   },
                                 ),
                               ),
-                             
+                              buildImg(filePath),
                               Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 width: deviceWidth - 100,
-                                child: BlocProvider(
-                                  create: (context) {
-                                    return ImagePickBlocBloc(
-                                        registerRepository);
-                                  },
-                                  child: BlocConsumer<ImagePickBlocBloc,
-                                          ImagePickBlocState>(
-                                      listenWhen: (context, state) {
-                                        return state
-                                            is ImageSelectedSuccessState;
-                                      },
-                                      listener: (context, state) {},
-                                      buildWhen: (context, state) {
-                                        return state is ImagePickBlocInitial ||
-                                            state is ImageSelectedSuccessState;
-                                      },
-                                      builder: (context, state) {
-                                        if (state
-                                            is ImageSelectedSuccessState) {
-                                          print(
-                                              'PATH ${state.pickedFile.path}');
-                                          return Column(children: [
-                                            Image.file(
-                                              File(state.pickedFile.path),
-                                              height: 100,
-                                            ),
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.black,
-                                                ),
-                                                onPressed: () {},
-                                                child: const Text(
-                                                    'Actualizar Imagen'))
-                                          ]);
-                                        }
-                                        return Center(
-                                            child: ElevatedButton(
-                                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.redAccent),) 
-                                                ,
-                                                onPressed: () {
-                                                  BlocProvider.of<
-                                                              ImagePickBlocBloc>(
-                                                          context)
-                                                      .add(
-                                                          const SelectImageEvent(
-                                                              ImageSource
-                                                                  .gallery));
-                                                },
-                                                child: const Text(
-                                                    'Seleccionar una Imagen')));
-                                      }),
-                                ),
+                                child: Center(
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.redAccent),
+                                        ),
+                                        onPressed: () {
+                                          BlocProvider.of<ImagePickBlocBloc>(
+                                                  context)
+                                              .add(const SelectImageEvent(
+                                                  ImageSource.gallery));
+                                        },
+                                        child: const Text(
+                                            'Seleccionar una Imagen'))),
                               ),
                             ],
                           ),
@@ -264,8 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               const Text('¿Ya estás registrado?'),
                               TextButton(
                                 child: const Text(
-                                  
-                                  'Incia Sesión',
+                                  'Inicia Sesión',
                                   style: TextStyle(fontSize: 14),
                                 ),
                                 onPressed: () {
@@ -275,40 +238,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ],
                             mainAxisAlignment: MainAxisAlignment.center,
                           ),
-                          GestureDetector(
-                            onTap: () {
+                          ElevatedButton(
+                            onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 final registerDto = RegisterDto(
-                                    nombre: nombreController.text,
-                                    nick: nickController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    fechaNacimiento: dateController.text,
-                                 );
+                                  nombre: nombreController.text,
+                                  nickname: nickController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
                                 BlocProvider.of<ImagePickBlocBloc>(context)
                                     .add(SaveUserEvent(registerDto, filePath));
                               }
                             },
-                            child: Container(
-                                height: 50,
-                                width: 400,
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                child: TextButton(
-                                  child: const Text('FINALIZAR',
-                                      style: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255))),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          Colors.redAccent),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/');
-                                  },
-                                )),
+                            child: Text('REGISTRAR'),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 20),
+                                textStyle: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
                           )
                         ],
                       ),
                     )))));
+  }
+
+  buildImg(String filePath) {
+    if (filePath.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Container(
+          width: 100,
+          height: 100,
+          child: Image.file(File(filePath)),
+        ),
+      );
+    } else {
+      return Text('');
+    }
   }
 }
