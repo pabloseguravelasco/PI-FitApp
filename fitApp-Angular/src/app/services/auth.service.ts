@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginDto, LoginResponse } from '../models/interfaces/auth.interface';
 
@@ -20,6 +20,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   login(loginDto: LoginDto): Observable<LoginResponse> {
     let requestUrl = `${this.authBaseUrl}/login`;
     return this.http.post<LoginResponse>(requestUrl, loginDto, DEFAULT_HEADERS);
@@ -28,4 +30,10 @@ export class AuthService {
   forgot() {
     let requestUrl = `${this.authBaseUrl}/forgot`;    
   }
+
+  get isLoggedIn() {
+    return this.loggedIn.asObservable();
+  }
+
+  
 }

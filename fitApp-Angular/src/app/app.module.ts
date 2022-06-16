@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { DietListComponent } from './components/diet-list/diet-list.component';
 import { DietItemComponent } from './components/diet-item/diet-item.component';
+import { SideMenuComponent } from './shared/side-menu/side-menu.component';
+import { DialogExerciseDetailComponent } from './components/dialogs/dialog-exercise-detail/dialog-exercise-detail.component';
 
 
 
@@ -25,7 +27,9 @@ import { DietItemComponent } from './components/diet-item/diet-item.component';
     ExerciseItemComponent,
     DietListComponent,
     DietItemComponent,
-    LoginComponent
+    LoginComponent,
+    SideMenuComponent, 
+    DialogExerciseDetailComponent
 
    
   ],

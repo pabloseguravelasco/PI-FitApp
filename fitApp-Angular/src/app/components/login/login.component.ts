@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { LoginDto } from "src/app/models/interfaces/auth.interface";
 import { AuthService } from "src/app/services/auth.service";
@@ -13,10 +14,15 @@ import { AuthService } from "src/app/services/auth.service";
 })
 export class LoginComponent implements OnInit {
   loginDto = new LoginDto();
-
-  constructor(private authService: AuthService, private route:Router) { }
+  form: FormGroup | undefined;
+ 
+  constructor(private authService: AuthService, private route:Router,private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
   doLogin() {
@@ -25,5 +31,7 @@ export class LoginComponent implements OnInit {
       this.route.navigate(['/exercise/list']);
     })
   }
+
+  
 
 }

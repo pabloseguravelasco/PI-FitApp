@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-popcorn": {
+    "fitapp-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-popcorn",
+            "outputPath": "dist/fitapp-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-popcorn:build:production"
+              "browserTarget": "fitapp-angular:build:production"
             },
             "development": {
-              "browserTarget": "angular-popcorn:build:development"
+              "browserTarget": "fitapp-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-popcorn:build"
+            "browserTarget": "fitapp-angular:build"
           }
         },
         "test": {
@@ -104,7 +104,7 @@
       }
     }
   },
-  "defaultProject": "angular-popcorn",
+  "defaultProject": "fitapp-angular",
   "cli": {
     "analytics": "ff1cc182-c188-43e4-88b4-8d23d485dcc9"
   }

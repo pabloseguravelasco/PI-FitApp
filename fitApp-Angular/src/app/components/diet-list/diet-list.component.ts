@@ -20,8 +20,10 @@ export class DietListComponent implements OnInit {
   ngOnInit(): void {
     
     this.dietService.getDiets().subscribe(dietResponse => {
-      this.diets = dietResponse.diet;
+      this.diets = dietResponse.content;
     });
   }
+
+  
 
 }

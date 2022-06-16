@@ -1,9 +1,15 @@
 * {
     box-sizing: border-box;
   }
-  html,
-  body {
-    background: #000000;
+  img{
+
+    margin-left: 25%;
+    margin-top: 10%;
+  }
+  html, body {
+    background-image: url("../../../assets/images/fondo.jpg");
+    background-size: 100% ;  
+    background-size: cover;  
   }
   h1 {
     margin: 0;
@@ -11,18 +17,22 @@
     color: white;
     text-align: center;
   }
+  .space{
+
+    margin-top: 10rem;
+  }
   .custom-form {
     min-width: 300px;
-    max-width: 60%;
-    margin: 0px auto;
+    max-width: 50%;
+    margin:auto;
     background: rgba(255, 255, 255, 0.15);
     padding: 2rem 3rem;
-    margin: auto;
+    
     border-radius: 2.5rem;
-    background-color: #000000;
+    background-color: #161515;
     box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #ffffff;
     color: black;
-    margin-top: 10rem;
+   
   }
   .custom-form input {
     display: block;
@@ -37,6 +47,7 @@
     background: #ffffff;
   }
   .custom-form button {
+    margin-left: 25%;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     border: none;
@@ -44,7 +55,7 @@
     color: #ffffff;
     font-weight: bold;
     background-color: #d40d0d;
-    width: 100%;
+    width: 50%;
     display: block;
     padding: 0.875rem 1rem;
     border-radius: 1.5rem;

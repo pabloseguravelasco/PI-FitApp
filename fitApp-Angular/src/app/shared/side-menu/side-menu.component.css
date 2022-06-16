@@ -4,6 +4,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    color: rgb(255, 0, 0);
   }
 
   .example-spacer {
@@ -12,6 +13,7 @@
 
   .sidenav-menu {
       width: 300px;
+      color: rgb(255, 0, 0);
   }
 
   .sidenav-title {
@@ -28,6 +30,10 @@
 
   a, a:active, a:hover, a:visited {
       text-decoration: none;
-      color: #4051B5;
+      color: #fc0000b9;
       line-height: 20px;
+  }
+  .mad-list{
+
+    background-color: red;
   }

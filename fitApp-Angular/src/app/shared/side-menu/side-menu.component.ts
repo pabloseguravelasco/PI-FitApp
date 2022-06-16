@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -10,12 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SideMenuComponent implements OnInit {
   currentPage = 'Exercises';
+  isLoggedIn$: Observable<boolean> | undefined;
 
-  constructor(private router: Router, private dialog: MatDialog) { }
+  constructor(private router: Router, private dialog: MatDialog,private authService:AuthService) { }
 
   ngOnInit(): void {
-    console.log(this.router.url);
+    
+      this.isLoggedIn$ = this.authService.isLoggedIn;
+    }
   }
 
 
-}

@@ -13,14 +13,15 @@ import { ExerciseService } from 'src/app/services/exercise.service';
 export class ExerciseListComponent implements OnInit {
   exercises: Exercise[] = [];
 
-  constructor(private exerciseService: ExerciseService,
-    private authService: AuthService
-    ) { }
+  constructor(private exerciseService: ExerciseService
+  ) { }
 
   ngOnInit(): void {
-    
+
     this.exerciseService.getExercises().subscribe(exerciseResponse => {
-      this.exercises = exerciseResponse.exercise;
+      this.exercises = exerciseResponse.content;
+
+      console.log(this.exercises);
     });
   }
 
